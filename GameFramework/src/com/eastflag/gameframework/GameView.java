@@ -2,6 +2,10 @@ package com.eastflag.gameframework;
 
 import java.util.ArrayList;
 
+import com.eastflag.gameframework.scene.IScene;
+import com.eastflag.gameframework.scene.MainScene;
+import com.eastflag.gameframework.scene.StartScene;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,20 +28,25 @@ public class GameView extends SurfaceView implements Callback {
 	private boolean mSuccess;
 	
 	private Paint mPaint;
+	
+	public IScene mIScene;
 
 	public GameView(Context context) {
 		super(context);
 		
+		setFocusable(true);
+		
 		mAppDirector = AppDirector.getInstance();
-		mPaint = new Paint();
-		mPaint.setColor(Color.RED);
-		mPaint.setAntiAlias(true);
-		mPaint.setTextSize(30);
 		
 		//1. 필름과 연필을 애니메이션 작가에게 넘김
 		SurfaceHolder mHolder = getHolder();  
 		mHolder.addCallback(this);
 		mThread = new RenderingThread(this, mHolder); 
+		
+		//초기화
+		mAppDirector.setmGameView(this);
+		//최초 씬을 게임 시작씬으로 가정
+		mIScene = new MainScene();
 	}
 
 	@Override
@@ -70,16 +79,23 @@ public class GameView extends SurfaceView implements Callback {
 	
 	//4. 필름 상태 업데이트
 	public void update(){
-		
+		mIScene.update();
 	}
 
 	//5. 그림 그리기
 	public void present(Canvas virtualCanvas){
-		//회색으로 칠하기
-	    virtualCanvas.drawColor(Color.DKGRAY);
-	    //FPS 와 delta 타임 그리기
-	    virtualCanvas.drawText("deltaTime:" + mAppDirector.getmDeltaTime(), 100, 100, mPaint);
-	    virtualCanvas.drawText("FPS:" + 1000f/mAppDirector.getmDeltaTime(), 100, 200, mPaint);
+		mIScene.present(virtualCanvas);
 	}
+	
+	public void changeScene(IScene iScene) {
+		mIScene = iScene;
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		mIScene.onTouchEvent(event);
+		return true;
+	}
+	
 	
 }
