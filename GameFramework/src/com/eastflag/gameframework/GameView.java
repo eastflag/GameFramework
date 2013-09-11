@@ -93,7 +93,8 @@ public class GameView extends SurfaceView implements Callback {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		mIScene.onTouchEvent(event);
+		//event의 x, y 정보를 가상디바이스 좌표로 변환하여 넘겨줌
+		mIScene.onTouchEvent(mAppDirector.convertEvent(event)); 
 		return true;
 	}
 	

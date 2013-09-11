@@ -22,6 +22,11 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		//상태바 없애기
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
+		//초기화
+		AppDirector.getInstance().setmMainActivity(this);
+		AppDirector.getInstance().initialize();
+		
 		//게임뷰 세팅
 		setContentView(new GameView(this)); //카메라에 필름 끼우기
 	}

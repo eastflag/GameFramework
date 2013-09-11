@@ -1,17 +1,35 @@
 package com.eastflag.gameframework;
 
+import java.io.IOException;
+
 import android.app.Application;
+import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
+import android.view.WindowManager;
 
 public class AppDirector extends Application {
-	//가상 디바이스 : 
-	private int mVirtualWidth = 480;
-	private int mVirtualHeight = 800;
+	//가상 디바이스 : FHD로 가정
+	private int mVirtualWidth = 1080;
+	private int mVirtualHeight = 1920;
+	//실제 디바이스 크기
+	private int mWidth;
+	private int mHeight;
 	
 	private int mScreenWidth;
 	private int mScreenHeight;
 	
 	private float ratioX;
 	private float ratioY;
+	
+	//리소스
+	public Bitmap background1;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -28,6 +46,34 @@ public class AppDirector extends Application {
 		return _instance;
 	}
 	//singleton pattern-------------------------------------
+	
+	public void initialize() {
+		//실제 디바이스 크기 구하기
+		//Display display = ((WindowManager)mMainActivity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		mMainActivity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);;
+		mWidth = outMetrics.widthPixels;
+		mHeight = outMetrics.heightPixels;
+		Log.d("ldk", "mWidth:" + mWidth);
+		
+		//리소스 로딩
+		AssetManager am = mMainActivity.getAssets();
+		try {
+			background1 = BitmapFactory.decodeStream(am.open("background1.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public MotionEvent convertEvent(MotionEvent event){
+		Log.d("ldk", "x:" + event.getX());
+		MotionEvent e = MotionEvent.obtain(event);
+		e.setLocation(event.getX() * mVirtualWidth / mWidth, event.getY() * mVirtualHeight / mHeight);
+		Log.d("ldk", "calculated x:" + e.getX());
+		
+		return e;
+	}
 
     //getter and setter------------------------------------
 	private GameView mGameView;
