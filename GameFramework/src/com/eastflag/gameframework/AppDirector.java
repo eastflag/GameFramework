@@ -16,8 +16,8 @@ import android.view.WindowManager;
 
 public class AppDirector extends Application {
 	//가상 디바이스 : FHD로 가정
-	private int mVirtualWidth = 1080;
-	private int mVirtualHeight = 1920;
+	public int mVirtualWidth = 1080;
+	public int mVirtualHeight = 1920;
 	//실제 디바이스 크기
 	private int mWidth;
 	private int mHeight;
@@ -29,7 +29,7 @@ public class AppDirector extends Application {
 	private float ratioY;
 	
 	//리소스
-	public Bitmap background1;
+	public Bitmap background1, background2, back_cloud;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -60,8 +60,9 @@ public class AppDirector extends Application {
 		AssetManager am = mMainActivity.getAssets();
 		try {
 			background1 = BitmapFactory.decodeStream(am.open("background1.png"));
+			background2 = BitmapFactory.decodeStream(am.open("background2.jpg"));
+			back_cloud = BitmapFactory.decodeStream(am.open("background_2.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
