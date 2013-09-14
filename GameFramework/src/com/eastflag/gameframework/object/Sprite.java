@@ -51,6 +51,10 @@ public class Sprite {
     }
     
     public void update(){
+    	if(frameCount == 0) {  //정지 영상이면 update 안함.
+    		return;
+    	}
+    	
         localDeltaTime += AppDirector.getInstance().getmDeltaTime();
         
         while(localDeltaTime>frameTime) {
