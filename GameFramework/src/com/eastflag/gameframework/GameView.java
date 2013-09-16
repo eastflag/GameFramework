@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.eastflag.gameframework.scene.IScene;
 import com.eastflag.gameframework.scene.MainScene;
-import com.eastflag.gameframework.scene.StartScene;
+import com.eastflag.gameframework.scene.StartShootScene;
 
 import android.content.Context;
 import android.graphics.Canvas;

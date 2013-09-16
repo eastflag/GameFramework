@@ -5,28 +5,29 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
-public class TextButton {
-	private int startX, startY;
+public class TextButton extends Button{
 	private int centerX, centerY;
-	private int width, height;
 	private String title;
 	
 	private Rect mRect;
-	private Paint backgroundPaint, fontPaint;
+	private Paint backgroundPaint, backgroundOnPaint, fontPaint;
 	
 	public TextButton(int centerX, int centerY, int width, int height, String title) {
 		this.centerX = centerX;
 		this.centerY = centerY;
-		this.startX = centerX - width/2;
-		this.startY = centerY - height/2;
-		this.width = width;
-		this.height = height;
+		mX = centerX - width/2;
+		mY = centerY - height/2;
+		mWidth = width;
+		mHeight = height;
 		this.title = title;
 		
-		mRect = new Rect(startX, startY, startX+width, startY+height);
+		mRect = new Rect(mX, mY, mX+mWidth, mY+mHeight);
 		backgroundPaint = new Paint();
-		backgroundPaint.setColor(Color.GRAY);
+		backgroundPaint.setColor(Color.CYAN);
+		backgroundOnPaint = new Paint();
+		backgroundOnPaint.setColor(Color.GREEN);
 		fontPaint = new Paint();
 		fontPaint.setColor(Color.WHITE);
 		fontPaint.setTextAlign(Align.CENTER);
@@ -34,7 +35,30 @@ public class TextButton {
 	}
 	
 	public void present(Canvas canvas) {
-		canvas.drawRect(mRect, backgroundPaint);
-		canvas.drawText(title, centerX, centerY + (int)(height/2*0.4f), fontPaint);
+		if(isOn) {
+			canvas.drawRect(mRect, backgroundOnPaint);
+		} else {
+			canvas.drawRect(mRect, backgroundPaint);
+		}
+
+		canvas.drawText(title, centerX, centerY + (int)(mHeight/2*0.4f), fontPaint);
 	}
+	
+    public boolean isSelected(MotionEvent event) {
+    	//버튼 영역 체크
+    	if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
+    	
+	        switch(event.getAction()){
+	        case MotionEvent.ACTION_DOWN:
+	            isOn = true;
+	            break;
+	        case MotionEvent.ACTION_UP:
+	        case MotionEvent.ACTION_CANCEL:
+	            isOn = false;
+	            return true;
+	        }
+	    }
+        
+        return false;
+    }
 }

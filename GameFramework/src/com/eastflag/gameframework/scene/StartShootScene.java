@@ -10,7 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
-public class StartScene implements IScene{
+public class StartShootScene implements IScene{
 	
 //	private Paint mPaint;
 	private AppDirector mAppDirector;
@@ -18,7 +18,7 @@ public class StartScene implements IScene{
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
 	private Player mPlayer; //플레이어
 	
-	public StartScene(){
+	public StartShootScene(){
 //		mPaint = new Paint();
 //		mPaint.setColor(Color.RED);
 //		mPaint.setAntiAlias(true);

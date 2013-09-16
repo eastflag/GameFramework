@@ -31,6 +31,7 @@ public class AppDirector extends Application {
 	//리소스
 	public Bitmap background1, background2, back_cloud;
 	public Bitmap player;
+	public Bitmap menuNew, menuNewOn;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -64,6 +65,8 @@ public class AppDirector extends Application {
 			background2 = BitmapFactory.decodeStream(am.open("background2.jpg"));
 			back_cloud = BitmapFactory.decodeStream(am.open("background_2.png"));
 			player = BitmapFactory.decodeStream(am.open("player.png"));
+			menuNew = BitmapFactory.decodeStream(am.open("btn00.png"));
+			menuNewOn = BitmapFactory.decodeStream(am.open("btn01.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

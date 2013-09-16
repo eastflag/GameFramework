@@ -2,21 +2,27 @@ package com.eastflag.gameframework.scene;
 
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
+import com.eastflag.gameframework.object.ImageButton;
 import com.eastflag.gameframework.object.Player;
 import com.eastflag.gameframework.object.TextButton;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class MainScene implements IScene {
 	private AppDirector mAppDirector;
 	
-	//private TextButton mMenuSingle;  //메뉴
+	private TextButton mMenuShooting, mMenuBoard;  //메뉴
+	//private ImageButton menuShooting;
 	
 	public MainScene(){
 		mAppDirector = AppDirector.getInstance();
 		
-		//mMenuSingle = new TextButton(240, 200, 300, 80, "single game");
+		mMenuShooting = new TextButton(540, 400, 600, 100, "shooting game");
+		mMenuBoard = new TextButton(540, 800, 600, 100, "board game");
+		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
+		//menuShooting.setPosition(540, 500, 800, 300);
 	}
 	
 
@@ -26,14 +32,27 @@ public class MainScene implements IScene {
 
 	@Override
 	public void present(Canvas virtualCanvas) {
-		//virtualCanvas.drawColor(Color.DKGRAY);
-		//mMenuSingle.present(virtualCanvas);
+		virtualCanvas.drawColor(Color.LTGRAY);
+		mMenuShooting.present(virtualCanvas);
+		mMenuBoard.present(virtualCanvas);
+		//menuShooting.present(virtualCanvas);
 	}
 
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
 		//mAppDirector.getmGameView().changeScene(new StartScene());
+		//if(menuShooting.isSelected(event)) {
+		//	mAppDirector.getmGameView().changeScene(new StartScene());
+		//}
+		
+		if(mMenuShooting.isSelected(event)) {
+			mAppDirector.getmGameView().changeScene(new StartShootScene());
+		}
+		
+		if(mMenuBoard.isSelected(event)) {
+			mAppDirector.getmGameView().changeScene(new StartShootScene());
+		}
 	}
 
 }

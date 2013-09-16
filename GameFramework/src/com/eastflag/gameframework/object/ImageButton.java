@@ -5,12 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-public class ImageButton {
+public class ImageButton extends Button{
     
     private Bitmap mBitmap, mBitmapOn;
-    private int mX, mY;
-    private int mWidth, mHeight;
-    private boolean isOn;
     
     private Rect srcRect, dstRect;
 
@@ -43,18 +40,6 @@ public class ImageButton {
             canvas.drawBitmap(mBitmapOn, srcRect, dstRect, null);
         } else {
             canvas.drawBitmap(mBitmap, srcRect, dstRect, null);
-        }
-    }
-    
-    public void onTouchEvent(MotionEvent event) {
-        switch(event.getAction()){
-        case MotionEvent.ACTION_DOWN:
-            isOn = true;
-            break;
-        case MotionEvent.ACTION_UP:
-        case MotionEvent.ACTION_CANCEL:
-            isOn = false;
-            break;
         }
     }
 }
