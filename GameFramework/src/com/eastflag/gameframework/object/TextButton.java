@@ -7,58 +7,33 @@ import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-public class TextButton extends Button{
-	private int centerX, centerY;
+public class TextButton extends Sprite{
 	private String title;
 	
-	private Rect mRect;
 	private Paint backgroundPaint, backgroundOnPaint, fontPaint;
 	
-	public TextButton(int centerX, int centerY, int width, int height, String title) {
-		this.centerX = centerX;
-		this.centerY = centerY;
-		mX = centerX - width/2;
-		mY = centerY - height/2;
-		mWidth = width;
-		mHeight = height;
+	public TextButton(String title) {
 		this.title = title;
-		
-		mRect = new Rect(mX, mY, mX+mWidth, mY+mHeight);
+	}
+	
+	public void init(int backColor, int backOnColor, int fontColor) {
 		backgroundPaint = new Paint();
-		backgroundPaint.setColor(Color.CYAN);
+		backgroundPaint.setColor(backColor);
 		backgroundOnPaint = new Paint();
-		backgroundOnPaint.setColor(Color.GREEN);
+		backgroundOnPaint.setColor(backOnColor);
 		fontPaint = new Paint();
-		fontPaint.setColor(Color.WHITE);
+		fontPaint.setColor(fontColor);
 		fontPaint.setTextAlign(Align.CENTER);
-		fontPaint.setTextSize(height/2);
+		fontPaint.setTextSize(mHeight/2);
 	}
 	
 	public void present(Canvas canvas) {
 		if(isOn) {
-			canvas.drawRect(mRect, backgroundOnPaint);
+			canvas.drawRect(dstRect, backgroundOnPaint);
 		} else {
-			canvas.drawRect(mRect, backgroundPaint);
+			canvas.drawRect(dstRect, backgroundPaint);
 		}
 
-		canvas.drawText(title, centerX, centerY + (int)(mHeight/2*0.4f), fontPaint);
+		canvas.drawText(title, mX+mWidth/2, mY+mHeight/2 + (int)(mHeight/2*0.4f), fontPaint);
 	}
-	
-    public boolean isSelected(MotionEvent event) {
-    	//버튼 영역 체크
-    	if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
-    	
-	        switch(event.getAction()){
-	        case MotionEvent.ACTION_DOWN:
-	            isOn = true;
-	            break;
-	        case MotionEvent.ACTION_UP:
-	        case MotionEvent.ACTION_CANCEL:
-	            isOn = false;
-	            return true;
-	        }
-	    }
-        
-        return false;
-    }
 }

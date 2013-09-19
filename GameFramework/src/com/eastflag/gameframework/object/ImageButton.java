@@ -5,11 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-public class ImageButton extends Button{
+public class ImageButton extends Sprite{
     
     private Bitmap mBitmap, mBitmapOn;
     
-    private Rect srcRect, dstRect;
+    private Rect srcRect;
 
     public ImageButton(Bitmap bitmap, Bitmap bitmapOn) {
         mBitmap = bitmap;
@@ -18,21 +18,6 @@ public class ImageButton extends Button{
         mHeight = bitmap.getHeight();
         
         srcRect = new Rect(0, 0, mWidth, mHeight);
-        dstRect = new Rect(0, 0, mWidth, mHeight);
-    }
-    
-    public void setPosition(int x, int y) {
-        mX = x;
-        mY = y;
-    }
-    
-    public void setPosition(int centerX, int centerY, int width, int height) {
-        mX = centerX - width/2;
-        mY = centerY - height/2;
-        mWidth = width;
-        mHeight = height;
-        
-        dstRect.set(mX, mY, mX+mWidth, mY+mHeight);
     }
 
     public void present(Canvas canvas) {

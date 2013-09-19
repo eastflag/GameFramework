@@ -19,8 +19,12 @@ public class MainScene implements IScene {
 	public MainScene(){
 		mAppDirector = AppDirector.getInstance();
 		
-		mMenuShooting = new TextButton(540, 400, 600, 100, "shooting game");
-		mMenuBoard = new TextButton(540, 800, 600, 100, "board game");
+		mMenuShooting = new TextButton("shooting game");
+		mMenuShooting.init(Color.CYAN, Color.GREEN, Color.WHITE);
+		mMenuShooting.setPosition(540, 400, 600, 100);
+		mMenuBoard = new TextButton("board game");
+		mMenuBoard.init(Color.CYAN, Color.GREEN, Color.WHITE);
+		mMenuBoard.setPosition(540, 800, 600, 100);
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
 		//menuShooting.setPosition(540, 500, 800, 300);
 	}
@@ -46,11 +50,11 @@ public class MainScene implements IScene {
 		//	mAppDirector.getmGameView().changeScene(new StartScene());
 		//}
 		
-		if(mMenuShooting.isSelected(event)) {
+		if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_UP) {
 			mAppDirector.getmGameView().changeScene(new StartShootScene());
 		}
 		
-		if(mMenuBoard.isSelected(event)) {
+		if(mMenuBoard.isSelected(event) == MotionEvent.ACTION_UP) {
 			mAppDirector.getmGameView().changeScene(new StartShootScene());
 		}
 	}

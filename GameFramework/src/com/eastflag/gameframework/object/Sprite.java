@@ -1,43 +1,19 @@
 package com.eastflag.gameframework.object;
 
-import com.eastflag.gameframework.AppDirector;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
-public class Sprite {
-    private Bitmap bitmap;
-    private Rect srcRect;
-    private Rect dstRect;
-    private int mX, mY; //시작점
-    private int mWidth, mHeight; //화면에 보여질 넓이, 높이
-    private int frameCount, frameTime, width, height; //프레임갯수, 한프레임당 시간, 프레임 넓이, 높이
-    private int currentFrame;// 현재 프레임 위치, 0부터 시작
-    private long localDeltaTime;
-    private boolean isRepeat;
-    
-    public Sprite (Bitmap bitmap){
-        this.bitmap = bitmap;
-
-        currentFrame = 0;
-        srcRect = new Rect(0,0,0,0);
-        localDeltaTime = 0;
-        
-        mWidth = bitmap.getWidth();
-        mHeight = bitmap.getHeight();
-    }
-    
-    public void init(int frameCount, int frameTime, int width, int height, boolean isRepeat) {
-        this.frameCount = frameCount;
-        this.frameTime = frameTime;
-        this.width = width;
-        this.height = height;
-        mWidth = width; //최초에는 스프라이트의 넓이 높이로 초기화.
-        mHeight = height;
-        this.isRepeat = isRepeat;
-    }
-    
+public abstract class Sprite {
+	protected int mX, mY;
+	protected int mWidth, mHeight;
+	protected boolean isOn;
+	
+	protected Rect dstRect;
+	
+	public Sprite(){
+		dstRect = new Rect(mX, mY, mWidth, mHeight);
+	}
+	
     public void setPosition(int x, int y) {
         mX = x;
         mY = y;
@@ -48,34 +24,36 @@ public class Sprite {
         mY = centerY - height/2;
         mWidth = width;
         mHeight = height;
-    }
-    
-    public void update(){
-    	if(frameCount == 0) {  //정지 영상이면 update 안함.
-    		return;
-    	}
-    	
-        localDeltaTime += AppDirector.getInstance().getmDeltaTime();
         
-        while(localDeltaTime>frameTime) {
-            if(localDeltaTime>frameTime){
-                currentFrame += 1;
-                localDeltaTime-=frameTime;
-                if(currentFrame>=frameCount){
-                    if(isRepeat) currentFrame=0;
-                    else currentFrame -=1;
-                }
-            }
-        }
-        
-        srcRect.left =  width * currentFrame;
-        srcRect.right = width * currentFrame + width;
-        srcRect.top = 0;
-        srcRect.bottom = height;
+        dstRect.set(mX, mY, mX+mWidth, mY+mHeight);
     }
-    
-    public void present(Canvas canvas){
-        dstRect = new Rect(mX, mY, mX+mWidth, mY+mHeight);
-        canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+	
+	//return 값 정의
+	//0 : 선택 안됨
+	//1 : down
+	//2 : move
+	//3 : up
+    public int isSelected(MotionEvent event) {
+    	//버튼 영역 체크
+    	int result = -1;
+    	if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
+	        switch(event.getAction()){
+	        case MotionEvent.ACTION_DOWN: 
+	        	result = MotionEvent.ACTION_DOWN;
+	        	break;
+	        case MotionEvent.ACTION_MOVE:
+	            isOn = true;
+	            result = MotionEvent.ACTION_MOVE;
+	            break;
+	        case MotionEvent.ACTION_UP:
+	        	//FALL-THROUGH
+	        case MotionEvent.ACTION_CANCEL:
+	            isOn = false;
+	            result = MotionEvent.ACTION_UP;
+	            break;
+	        }
+	    }
+        
+        return result;
     }
 }
