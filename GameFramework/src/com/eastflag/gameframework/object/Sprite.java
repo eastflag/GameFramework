@@ -29,10 +29,10 @@ public abstract class Sprite {
     }
 	
 	//return 값 정의
-	//0 : 선택 안됨
-	//1 : down
+	//-1 : 선택 안됨
+	//0 : down
 	//2 : move
-	//3 : up
+	//1 : up
     public int isSelected(MotionEvent event) {
     	//버튼 영역 체크
     	int result = -1;

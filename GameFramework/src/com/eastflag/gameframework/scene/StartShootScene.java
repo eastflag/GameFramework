@@ -3,6 +3,8 @@ package com.eastflag.gameframework.scene;
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
 import com.eastflag.gameframework.object.Player;
+import com.eastflag.gameframework.object.Sprite;
+import com.eastflag.gameframework.object.SpriteObject;
 import com.eastflag.gameframework.object.TextButton;
 
 import android.graphics.Canvas;
@@ -16,6 +18,7 @@ public class StartShootScene implements IScene{
 	private AppDirector mAppDirector;
 	
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
+	private SpriteObject leftKeypad, rightKeypad, upKeypad, downKeypad, tapKeypad;
 	private Player mPlayer; //플레이어
 	
 	public StartShootScene(){
@@ -33,6 +36,17 @@ public class StartShootScene implements IScene{
 		mPlayer = new Player(mAppDirector.player);
 		mPlayer.init(6, 100, 62, 104, true);
 		mPlayer.setPosition(540, 1600, 200, 350);
+		
+		upKeypad = new SpriteObject(mAppDirector.upTriangle);
+		upKeypad.setPosition(150, 1400, 100, 100);
+		rightKeypad = new SpriteObject(mAppDirector.rightTriangle);
+		rightKeypad.setPosition(250, 1550, 100, 100);
+		downKeypad = new SpriteObject(mAppDirector.downTriangle);
+		downKeypad.setPosition(150, 1700, 100, 100);
+		leftKeypad = new SpriteObject(mAppDirector.leftTriangle);
+		leftKeypad.setPosition(50, 1550, 100, 100);
+		tapKeypad = new SpriteObject(mAppDirector.circle);
+		tapKeypad.setPosition(150, 1550, 100, 100);
 	}
 
 	@Override
@@ -52,11 +66,18 @@ public class StartShootScene implements IScene{
 		mBackground.present(canvas);
 		mBackCloud.present(canvas);
 		mPlayer.present(canvas);
+		
+		upKeypad.present(canvas);
+		rightKeypad.present(canvas);
+		downKeypad.present(canvas);
+		leftKeypad.present(canvas);
+		tapKeypad.present(canvas);
 	}
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
+//		if(upKeypad.isSelected(event) == MotionEvent.ACTION_HOVER_MOVE)
+//			mPlayer.setPosition(x, y);
 		
 	}
 

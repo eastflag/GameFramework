@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,9 +30,12 @@ public class AppDirector extends Application {
 	private float ratioY;
 	
 	//리소스
+	//MainScene
 	public Bitmap background1, background2, back_cloud;
-	public Bitmap player;
 	public Bitmap menuNew, menuNewOn;
+	//StartShoot
+	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
+	public Bitmap player;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -67,6 +71,18 @@ public class AppDirector extends Application {
 			player = BitmapFactory.decodeStream(am.open("player.png"));
 			menuNew = BitmapFactory.decodeStream(am.open("btn00.png"));
 			menuNewOn = BitmapFactory.decodeStream(am.open("btn01.png"));
+			circle = BitmapFactory.decodeStream(am.open("circle.png"));
+			upTriangle = BitmapFactory.decodeStream(am.open("triangle.png"));
+			Matrix m = new Matrix();
+			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
+			rightTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
+					m, false);
+			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
+			downTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
+					m, false);
+			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
+			leftTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
+					m, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
