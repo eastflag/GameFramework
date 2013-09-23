@@ -1,6 +1,7 @@
 package com.eastflag.gameframework.object;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import com.eastflag.gameframework.AppDirector;
 
@@ -27,6 +28,10 @@ public class Missile extends SpriteObject {
 		}
 	}
 	
+	public void present(Canvas canvas) {
+		super.present(canvas);
+	}
+
 	
 	public boolean getmIsDead() {
 		return mIsDead;
