@@ -1,7 +1,10 @@
 package com.eastflag.gameframework.scene;
 
+import java.util.ArrayList;
+
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
+import com.eastflag.gameframework.object.Missile;
 import com.eastflag.gameframework.object.Player;
 import com.eastflag.gameframework.object.Sprite;
 import com.eastflag.gameframework.object.SpriteObject;
@@ -21,6 +24,7 @@ public class StartShootScene implements IScene{
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
 	private SpriteObject leftKeypad, rightKeypad, upKeypad, downKeypad, tapKeypad;
 	private Player mPlayer; //플레이어
+	private ArrayList<Missile> missileList = new ArrayList<Missile>();
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -55,6 +59,12 @@ public class StartShootScene implements IScene{
 		mBackground.update();
 		mBackCloud.update();
 		mPlayer.update();
+		
+		for(Missile missile : missileList) {
+			missile.update();
+			if(missile.getmIsDead())
+				missileList.remove(missile);
+		}
 	}
 
 	@Override
@@ -82,6 +92,7 @@ public class StartShootScene implements IScene{
 		//up시 초기화.
 		switch(event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
+			//keypad
 			if(upKeypad.isSelected(event) == MotionEvent.ACTION_DOWN){
 				mPlayer.startMoving(0, -1);
 			}
@@ -93,6 +104,12 @@ public class StartShootScene implements IScene{
 			}
 			if(leftKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
 				mPlayer.startMoving(-1, 0);
+			}
+			//missile tap
+			if(tapKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				Missile missile = new Missile(AppDirector.getInstance().missile);
+				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
+				missileList.add(missile);
 			}
 			break;
 		case MotionEvent.ACTION_UP:

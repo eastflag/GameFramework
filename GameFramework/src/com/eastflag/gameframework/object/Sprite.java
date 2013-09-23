@@ -28,7 +28,25 @@ public abstract class Sprite {
         
         dstRect.set(mX, mY, mX+mWidth, mY+mHeight);
     }
-	
+    
+    //getter-----------------------------------------------------------
+	public int getmX() {
+		return mX;
+	}
+
+	public int getmY() {
+		return mY;
+	}
+
+	public int getmWidth() {
+		return mWidth;
+	}
+
+	public int getmHeight() {
+		return mHeight;
+	}
+	//getter--------------------------------------------------
+
 	//return 값 정의
 	//-1 : 선택 안됨
 	//0 : down

@@ -39,6 +39,7 @@ public class AppDirector extends Application {
 	//StartShoot
 	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
 	public Bitmap player;
+	public Bitmap missile;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -83,6 +84,8 @@ public class AppDirector extends Application {
 			downTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
 			leftTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
+			missile = BitmapFactory.decodeStream(am.open("missile_1.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
