@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -75,24 +78,21 @@ public class AppDirector extends Application {
 			upTriangle = BitmapFactory.decodeStream(am.open("triangle.png"));
 			Matrix m = new Matrix();
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
-			rightTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
-					m, false);
+			rightTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
-			downTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
-					m, false);
+			downTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
-			leftTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), 
-					m, false);
+			leftTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public MotionEvent convertEvent(MotionEvent event){
-		Log.d("ldk", "x:" + event.getX());
+		//Log.d("ldk", "x:" + event.getX());
 		MotionEvent e = MotionEvent.obtain(event);
 		e.setLocation(event.getX() * mVirtualWidth / mWidth, event.getY() * mVirtualHeight / mHeight);
-		Log.d("ldk", "calculated x:" + e.getX());
+		//Log.d("ldk", "calculated x:" + e.getX());
 		
 		return e;
 	}

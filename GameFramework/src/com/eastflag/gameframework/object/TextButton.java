@@ -16,7 +16,7 @@ public class TextButton extends Sprite{
 		this.title = title;
 	}
 	
-	public void init(int backColor, int backOnColor, int fontColor) {
+	public void setColor(int backColor, int backOnColor, int fontColor) {
 		backgroundPaint = new Paint();
 		backgroundPaint.setColor(backColor);
 		backgroundOnPaint = new Paint();

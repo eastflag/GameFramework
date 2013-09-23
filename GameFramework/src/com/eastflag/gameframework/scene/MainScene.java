@@ -20,11 +20,13 @@ public class MainScene implements IScene {
 		mAppDirector = AppDirector.getInstance();
 		
 		mMenuShooting = new TextButton("shooting game");
-		mMenuShooting.init(Color.CYAN, Color.GREEN, Color.WHITE);
-		mMenuShooting.setPosition(540, 400, 600, 100);
+		mMenuShooting.setPosition(540, 600, 800, 150);
+		mMenuShooting.setColor(Color.CYAN, Color.GREEN, Color.WHITE);
+		
 		mMenuBoard = new TextButton("board game");
-		mMenuBoard.init(Color.CYAN, Color.GREEN, Color.WHITE);
-		mMenuBoard.setPosition(540, 800, 600, 100);
+		mMenuBoard.setPosition(540, 1000, 800, 150);
+		mMenuBoard.setColor(Color.CYAN, Color.GREEN, Color.WHITE);
+		
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
 		//menuShooting.setPosition(540, 500, 800, 300);
 	}

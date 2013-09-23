@@ -10,6 +10,7 @@ import com.eastflag.gameframework.object.TextButton;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class StartShootScene implements IScene{
@@ -38,15 +39,15 @@ public class StartShootScene implements IScene{
 		mPlayer.setPosition(540, 1600, 200, 350);
 		
 		upKeypad = new SpriteObject(mAppDirector.upTriangle);
-		upKeypad.setPosition(150, 1400, 100, 100);
+		upKeypad.setPosition(150, 1600, 100, 100);
 		rightKeypad = new SpriteObject(mAppDirector.rightTriangle);
-		rightKeypad.setPosition(250, 1550, 100, 100);
+		rightKeypad.setPosition(250, 1700, 100, 100);
 		downKeypad = new SpriteObject(mAppDirector.downTriangle);
-		downKeypad.setPosition(150, 1700, 100, 100);
+		downKeypad.setPosition(150, 1800, 100, 100);
 		leftKeypad = new SpriteObject(mAppDirector.leftTriangle);
-		leftKeypad.setPosition(50, 1550, 100, 100);
+		leftKeypad.setPosition(50, 1700, 100, 100);
 		tapKeypad = new SpriteObject(mAppDirector.circle);
-		tapKeypad.setPosition(150, 1550, 100, 100);
+		tapKeypad.setPosition(150, 1700, 100, 100);
 	}
 
 	@Override
@@ -76,9 +77,29 @@ public class StartShootScene implements IScene{
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
-//		if(upKeypad.isSelected(event) == MotionEvent.ACTION_HOVER_MOVE)
-//			mPlayer.setPosition(x, y);
-		
+		//down시 어떤 객체에서 down 되었는지,
+		//move시 down된 객체에서 move하면서 빠져나갔는지,,
+		//up시 초기화.
+		switch(event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			if(upKeypad.isSelected(event) == MotionEvent.ACTION_DOWN){
+				mPlayer.startMoving(0, -1);
+			}
+			if(downKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				mPlayer.startMoving(0, 1);
+			}
+			if(rightKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				mPlayer.startMoving(1, 0);
+			}
+			if(leftKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				mPlayer.startMoving(-1, 0);
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
+			mPlayer.stopMoving();
+			break;
+		}
 	}
 
 }

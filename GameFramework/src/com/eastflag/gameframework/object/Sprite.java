@@ -1,6 +1,7 @@
 package com.eastflag.gameframework.object;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public abstract class Sprite {
@@ -37,12 +38,13 @@ public abstract class Sprite {
     	//버튼 영역 체크
     	int result = -1;
     	if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
+    		Log.d("ldk", "action is " + event.getAction());
 	        switch(event.getAction()){
-	        case MotionEvent.ACTION_DOWN: 
+	        case MotionEvent.ACTION_DOWN:
 	        	result = MotionEvent.ACTION_DOWN;
+	        	isOn = true;
 	        	break;
 	        case MotionEvent.ACTION_MOVE:
-	            isOn = true;
 	            result = MotionEvent.ACTION_MOVE;
 	            break;
 	        case MotionEvent.ACTION_UP:
