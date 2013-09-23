@@ -18,7 +18,7 @@ public class Missile extends SpriteObject {
 		localTime += AppDirector.getInstance().getmDeltaTime();
 		
 		while(localTime>=10) {
-			mY -=  -3; //10ms에 3px 이동
+			mY -= 3; //10ms에 3px 이동
 			if(mY+mHeight<0) {
 				mIsDead = true;
 				break;

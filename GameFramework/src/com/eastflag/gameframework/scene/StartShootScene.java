@@ -1,6 +1,8 @@
 package com.eastflag.gameframework.scene;
 
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
@@ -24,7 +26,7 @@ public class StartShootScene implements IScene{
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
 	private SpriteObject leftKeypad, rightKeypad, upKeypad, downKeypad, tapKeypad;
 	private Player mPlayer; //플레이어
-	private ArrayList<Missile> missileList = new ArrayList<Missile>();
+	private BlockingQueue<Missile> missileList = new ArrayBlockingQueue<Missile>(100);
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -83,6 +85,10 @@ public class StartShootScene implements IScene{
 		downKeypad.present(canvas);
 		leftKeypad.present(canvas);
 		tapKeypad.present(canvas);
+		
+		for(Missile missile : missileList) {
+			missile.present(canvas);
+		}
 	}
 
 	@Override
