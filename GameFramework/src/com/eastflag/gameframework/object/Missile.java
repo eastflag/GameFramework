@@ -8,7 +8,6 @@ import com.eastflag.gameframework.AppDirector;
 public class Missile extends SpriteObject {
 	
 	private long localTime;
-	private boolean mIsDead;
 	private long speed;
 
 	public Missile(Bitmap bitmap, long speed) {
@@ -32,10 +31,5 @@ public class Missile extends SpriteObject {
 	
 	public void present(Canvas canvas) {
 		super.present(canvas);
-	}
-
-	
-	public boolean getmIsDead() {
-		return mIsDead;
 	}
 }

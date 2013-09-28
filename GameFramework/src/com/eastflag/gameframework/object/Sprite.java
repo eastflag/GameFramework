@@ -11,6 +11,7 @@ public abstract class Sprite {
 	protected int mWidth, mHeight;
 	protected boolean isOn;
 	protected Rect dstRect;
+	protected boolean mIsDead;
 	protected AppDirector mAppDirector;
 	
 	public Sprite(){
@@ -47,6 +48,14 @@ public abstract class Sprite {
 
 	public int getmHeight() {
 		return mHeight;
+	}
+	
+	public Rect getDstRect() {
+		return dstRect;
+	}
+	
+	public boolean getmIsDead() {
+		return mIsDead;
 	}
 	//getter--------------------------------------------------
 

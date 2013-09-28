@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
 import com.eastflag.gameframework.object.Enemy;
+import com.eastflag.gameframework.object.Explosion;
 import com.eastflag.gameframework.object.Missile;
 import com.eastflag.gameframework.object.Player;
 import com.eastflag.gameframework.object.Sprite;
@@ -17,6 +18,7 @@ import com.eastflag.gameframework.object.TextButton;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -33,6 +35,7 @@ public class StartShootScene implements IScene{
 	private BlockingQueue<Missile> missileList = new ArrayBlockingQueue<Missile>(100);
 	private BlockingQueue<Enemy> enemyList = new ArrayBlockingQueue<Enemy>(100);
 	private BlockingQueue<Missile> enemyMissileList = new ArrayBlockingQueue<Missile>(100);
+	private BlockingQueue<Explosion> explosionList = new ArrayBlockingQueue<Explosion>(100);
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -47,7 +50,7 @@ public class StartShootScene implements IScene{
 		mBackCloud.setSpeed(0, -1);
 		
 		mPlayer = new Player(mAppDirector.player);
-		mPlayer.init(6, 100, 62, 104, true);
+		mPlayer.init(6, 100, 62, 104, 0);
 		mPlayer.setPosition(540, 1600, 200, 350);
 		
 		upKeypad = new SpriteObject(mAppDirector.upTriangle);
@@ -97,7 +100,13 @@ public class StartShootScene implements IScene{
 				missileList.remove(missile);
 		}
 		
+		for(Explosion explosion : explosionList) {
+			explosion.update();
+			if(explosion.getmIsDead()) explosionList.remove(explosion);
+		}
+		
 		addEnemy();
+		checkCollision();
 	}
 
 	@Override
@@ -127,6 +136,10 @@ public class StartShootScene implements IScene{
 		
 		for(Missile missile : enemyMissileList) {
 			missile.present(canvas);
+		}
+		
+		for(Explosion explosion : explosionList) {
+			explosion.present(canvas);
 		}
 	}
 
@@ -167,7 +180,7 @@ public class StartShootScene implements IScene{
 	private void addEnemy() {
 		while(localDeltaTime >= ENEMY_DISPLAY_TIME) {
 			Enemy enemy = new Enemy(mAppDirector.enemy1);
-			enemy.init(6, 100, 62, 104, true);
+			enemy.init(6, 100, 62, 104, 0);
 			Random rand = new Random();
 			int width = 200;
 			int height = 350;
@@ -179,4 +192,29 @@ public class StartShootScene implements IScene{
 		}
 	}
 
+	private void checkCollision() {
+		for(Missile missile : missileList) {
+			for(Enemy enemy : enemyList) {
+				if(checkBoxToBox(enemy, missile)){
+					enemyList.remove(enemy);
+					missileList.remove(missile);
+					
+					Explosion explosion = new Explosion(mAppDirector.explosion);
+					explosion.init(6, 100, 66, 104, 2);
+					explosion.setPosition(enemy.getmX() + enemy.getmWidth()/2, enemy.getmY() + enemy.getmHeight()/2, enemy.getmWidth(), enemy.getmHeight());
+					explosionList.add(explosion);
+					break;
+				}
+			}
+		}
+	}
+	
+	public boolean checkBoxToBox(Sprite sprite1, Sprite sprite2) {
+		if(sprite1.getDstRect().intersect(sprite2.getDstRect())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

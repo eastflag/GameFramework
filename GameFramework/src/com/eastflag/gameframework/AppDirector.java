@@ -40,6 +40,7 @@ public class AppDirector extends Application {
 	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
 	public Bitmap player, enemy1, enemy2, enemy3;
 	public Bitmap missile, missile2;
+	public Bitmap explosion;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -91,6 +92,7 @@ public class AppDirector extends Application {
 			enemy1 = BitmapFactory.decodeStream(am.open("enemy1.png"));
 			enemy2 = BitmapFactory.decodeStream(am.open("enemy2.png"));
 			enemy3 = BitmapFactory.decodeStream(am.open("enemy3.png"));
+			explosion = BitmapFactory.decodeStream(am.open("explosion.png"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();

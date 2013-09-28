@@ -12,7 +12,7 @@ public class SpriteAnimation extends Sprite {
     private int frameCount, frameTime, width, height; //프레임갯수, 한프레임당 시간, 프레임 넓이, 높이
     private int currentFrame;// 현재 프레임 위치, 0부터 시작
     private long localDeltaTime;
-    private boolean isRepeat;
+    private int isRepeat; //1: 반복, 2: 반복안함, 계속 그림, 3: 반복안함, 삭제
     
     public SpriteAnimation (Bitmap bitmap){
         this.bitmap = bitmap;
@@ -22,7 +22,7 @@ public class SpriteAnimation extends Sprite {
         localDeltaTime = 0;
     }
     
-    public void init(int frameCount, int frameTime, int width, int height, boolean isRepeat) {
+    public void init(int frameCount, int frameTime, int width, int height, int isRepeat) {
         this.frameCount = frameCount;
         this.frameTime = frameTime;
         this.width = width;
@@ -42,8 +42,9 @@ public class SpriteAnimation extends Sprite {
                 currentFrame += 1;
                 localDeltaTime-=frameTime;
                 if(currentFrame>=frameCount){
-                    if(isRepeat) currentFrame=0;
-                    else currentFrame -=1;
+                    if(isRepeat == 0) currentFrame=0;
+                    else if(isRepeat == 1) currentFrame -=1;
+                    else mIsDead = true;
                 }
             }
         }

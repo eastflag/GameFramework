@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 
 public class Enemy extends SpriteAnimation{
 	private long localTime;
-
-	private boolean mIsDead;
 	
 	private long localMissileTime;
 	private long MISSILE_DISPLAY_TIME = 5000; //5초
@@ -36,10 +34,6 @@ public class Enemy extends SpriteAnimation{
 			makeMissile = true;
 			localMissileTime -= MISSILE_DISPLAY_TIME;
 		}
-	}
-	
-	public boolean getmIsDead() {
-		return mIsDead;
 	}
 
 	public boolean isMakeMissile() {
