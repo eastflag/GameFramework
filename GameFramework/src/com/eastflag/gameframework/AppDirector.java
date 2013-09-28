@@ -38,8 +38,8 @@ public class AppDirector extends Application {
 	public Bitmap menuNew, menuNewOn;
 	//StartShoot
 	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
-	public Bitmap player;
-	public Bitmap missile;
+	public Bitmap player, enemy1, enemy2, enemy3;
+	public Bitmap missile, missile2;
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -76,6 +76,7 @@ public class AppDirector extends Application {
 			menuNew = BitmapFactory.decodeStream(am.open("btn00.png"));
 			menuNewOn = BitmapFactory.decodeStream(am.open("btn01.png"));
 			circle = BitmapFactory.decodeStream(am.open("circle.png"));
+			
 			upTriangle = BitmapFactory.decodeStream(am.open("triangle.png"));
 			Matrix m = new Matrix();
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
@@ -84,7 +85,12 @@ public class AppDirector extends Application {
 			downTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
 			m.postRotate(90, upTriangle.getWidth()/2, upTriangle.getHeight()/2);
 			leftTriangle = Bitmap.createBitmap(upTriangle, 0, 0, upTriangle.getWidth(), upTriangle.getHeight(), m, false);
+			
 			missile = BitmapFactory.decodeStream(am.open("missile_1.png"));
+			missile2 = BitmapFactory.decodeStream(am.open("missile_2.png"));
+			enemy1 = BitmapFactory.decodeStream(am.open("enemy1.png"));
+			enemy2 = BitmapFactory.decodeStream(am.open("enemy2.png"));
+			enemy3 = BitmapFactory.decodeStream(am.open("enemy3.png"));
 			
 		} catch (IOException e) {
 			e.printStackTrace();

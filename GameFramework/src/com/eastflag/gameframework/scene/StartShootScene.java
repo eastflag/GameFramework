@@ -1,11 +1,13 @@
 package com.eastflag.gameframework.scene;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import com.eastflag.gameframework.AppDirector;
 import com.eastflag.gameframework.object.Background;
+import com.eastflag.gameframework.object.Enemy;
 import com.eastflag.gameframework.object.Missile;
 import com.eastflag.gameframework.object.Player;
 import com.eastflag.gameframework.object.Sprite;
@@ -22,11 +24,15 @@ public class StartShootScene implements IScene{
 	
 //	private Paint mPaint;
 	private AppDirector mAppDirector;
+	private long localDeltaTime;
+	private final long ENEMY_DISPLAY_TIME = 3000; // 3초에 한번씩 출현
 	
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
 	private SpriteObject leftKeypad, rightKeypad, upKeypad, downKeypad, tapKeypad;
 	private Player mPlayer; //플레이어
 	private BlockingQueue<Missile> missileList = new ArrayBlockingQueue<Missile>(100);
+	private BlockingQueue<Enemy> enemyList = new ArrayBlockingQueue<Enemy>(100);
+	private BlockingQueue<Missile> enemyMissileList = new ArrayBlockingQueue<Missile>(100);
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -58,6 +64,8 @@ public class StartShootScene implements IScene{
 
 	@Override
 	public void update() {
+		localDeltaTime += mAppDirector.getmDeltaTime();
+		
 		mBackground.update();
 		mBackCloud.update();
 		mPlayer.update();
@@ -67,6 +75,29 @@ public class StartShootScene implements IScene{
 			if(missile.getmIsDead())
 				missileList.remove(missile);
 		}
+		
+		for(Enemy enemy : enemyList) {
+			enemy.update();
+			if(enemy.getmIsDead()) {
+				enemyList.remove(enemy);
+				continue;
+			}
+			
+			if(enemy.isMakeMissile()) {
+				Missile enemyMissile = new Missile(mAppDirector.missile2, 3);
+				enemyMissile.setPosition(enemy.getmX() + enemy.getmWidth()/2, enemy.getmY()+ enemy.getmHeight(), 70, 70);
+				enemyMissileList.add(enemyMissile);
+				enemy.setMakeMissile(false);
+			}
+		}
+		
+		for(Missile missile : enemyMissileList) {
+			missile.update();
+			if(missile.getmIsDead())
+				missileList.remove(missile);
+		}
+		
+		addEnemy();
 	}
 
 	@Override
@@ -87,6 +118,14 @@ public class StartShootScene implements IScene{
 		tapKeypad.present(canvas);
 		
 		for(Missile missile : missileList) {
+			missile.present(canvas);
+		}
+		
+		for(Enemy enemy : enemyList) {
+			enemy.present(canvas);
+		}
+		
+		for(Missile missile : enemyMissileList) {
 			missile.present(canvas);
 		}
 	}
@@ -113,7 +152,7 @@ public class StartShootScene implements IScene{
 			}
 			//missile tap
 			if(tapKeypad.isSelected(event) == MotionEvent.ACTION_DOWN) {
-				Missile missile = new Missile(AppDirector.getInstance().missile);
+				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
 				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
 				missileList.add(missile);
 			}
@@ -122,6 +161,21 @@ public class StartShootScene implements IScene{
 		case MotionEvent.ACTION_CANCEL:
 			mPlayer.stopMoving();
 			break;
+		}
+	}
+	
+	private void addEnemy() {
+		while(localDeltaTime >= ENEMY_DISPLAY_TIME) {
+			Enemy enemy = new Enemy(mAppDirector.enemy1);
+			enemy.init(6, 100, 62, 104, true);
+			Random rand = new Random();
+			int width = 200;
+			int height = 350;
+			int minX = 200/2;
+			int maxX = 1080 - 200/2;
+			enemy.setPosition(minX + rand.nextInt(maxX-minX), -(height/2), width, height);
+			enemyList.add(enemy);
+			localDeltaTime -= ENEMY_DISPLAY_TIME;
 		}
 	}
 

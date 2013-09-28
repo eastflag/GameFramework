@@ -9,16 +9,18 @@ public class Missile extends SpriteObject {
 	
 	private long localTime;
 	private boolean mIsDead;
+	private long speed;
 
-	public Missile(Bitmap bitmap) {
+	public Missile(Bitmap bitmap, long speed) {
 		super(bitmap);
+		this.speed = speed;
 	}
 
 	public void update() {
 		localTime += AppDirector.getInstance().getmDeltaTime();
 		
 		while(localTime>=10) {
-			mY -= 3; //10ms에 3px 이동
+			mY += speed; //10ms에 3px 이동
 			if(mY+mHeight<0) {
 				mIsDead = true;
 				break;

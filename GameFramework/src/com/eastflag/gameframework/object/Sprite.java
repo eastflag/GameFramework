@@ -1,5 +1,7 @@
 package com.eastflag.gameframework.object;
 
+import com.eastflag.gameframework.AppDirector;
+
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -8,11 +10,12 @@ public abstract class Sprite {
 	protected int mX, mY;
 	protected int mWidth, mHeight;
 	protected boolean isOn;
-	
 	protected Rect dstRect;
+	protected AppDirector mAppDirector;
 	
 	public Sprite(){
 		dstRect = new Rect(mX, mY, mWidth, mHeight);
+		mAppDirector = AppDirector.getInstance();
 	}
 	
     public void setPosition(int x, int y) {
