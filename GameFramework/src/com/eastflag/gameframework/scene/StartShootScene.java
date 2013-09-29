@@ -168,6 +168,7 @@ public class StartShootScene implements IScene{
 				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
 				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
 				missileList.add(missile);
+				mAppDirector.play(2);
 			}
 			break;
 		case MotionEvent.ACTION_UP:
@@ -203,6 +204,7 @@ public class StartShootScene implements IScene{
 					explosion.init(6, 100, 66, 104, 2);
 					explosion.setPosition(enemy.getmX() + enemy.getmWidth()/2, enemy.getmY() + enemy.getmHeight()/2, enemy.getmWidth(), enemy.getmHeight());
 					explosionList.add(explosion);
+					mAppDirector.play(1); //폭발음
 					break;
 				}
 			}

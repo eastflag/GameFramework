@@ -16,6 +16,8 @@ public class MainScene implements IScene {
 	private TextButton mMenuShooting, mMenuBoard;  //메뉴
 	//private ImageButton menuShooting;
 	
+	private ImageButton btnBgm, btnSound;
+	
 	public MainScene(){
 		mAppDirector = AppDirector.getInstance();
 		
@@ -29,6 +31,9 @@ public class MainScene implements IScene {
 		
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
 		//menuShooting.setPosition(540, 500, 800, 300);
+		
+		btnBgm = new ImageButton(mAppDirector.soundOn, mAppDirector.soundOff);
+		btnSound = new ImageButton(mAppDirector.bgmOn, mAppDirector.bgmOff);
 	}
 	
 
@@ -42,6 +47,9 @@ public class MainScene implements IScene {
 		mMenuShooting.present(virtualCanvas);
 		mMenuBoard.present(virtualCanvas);
 		//menuShooting.present(virtualCanvas);
+		
+		btnBgm.present(virtualCanvas);
+		btnSound.present(virtualCanvas);
 	}
 
 

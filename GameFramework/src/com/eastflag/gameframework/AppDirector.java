@@ -1,24 +1,22 @@
 package com.eastflag.gameframework;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Point;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 
 public class AppDirector extends Application {
+	
 	//가상 디바이스 : FHD로 가정
 	public int mVirtualWidth = 1080;
 	public int mVirtualHeight = 1920;
@@ -32,10 +30,16 @@ public class AppDirector extends Application {
 	private float ratioX;
 	private float ratioY;
 	
+	//사운드
+	private SoundPool mSoundPool;
+	private HashMap<Integer, Integer> mSoundPoolMap;
+	private AudioManager mAudioManager;
+	
 	//리소스
 	//MainScene
 	public Bitmap background1, background2, back_cloud;
 	public Bitmap menuNew, menuNewOn;
+	public Bitmap bgmOn, bgmOff, soundOn, soundOff;
 	//StartShoot
 	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
 	public Bitmap player, enemy1, enemy2, enemy3;
@@ -67,9 +71,27 @@ public class AppDirector extends Application {
 		mHeight = outMetrics.heightPixels;
 		Log.d("ldk", "mWidth:" + mWidth);
 		
+		//사운드 로딩
+		mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+		mSoundPoolMap = new HashMap<Integer, Integer>();
+		mAudioManager = (AudioManager)mMainActivity.getSystemService(Context.AUDIO_SERVICE);
+		
+		mSoundPoolMap.put(1, mSoundPool.load(mMainActivity, R.raw.explosion, 1)); //폭발음
+		mSoundPoolMap.put(2, mSoundPool.load(mMainActivity, R.raw.missile, 1)); //아군 미사일
+		mSoundPoolMap.put(3, mSoundPool.load(mMainActivity, R.raw.missile_enemy, 1)); //적군 미사일
+		mSoundPoolMap.put(4, mSoundPool.load(mMainActivity, R.raw.mission_start, 1)); //미션 시작
+		mSoundPoolMap.put(5, mSoundPool.load(mMainActivity, R.raw.mission_success, 1)); //미션 성공
+		mSoundPoolMap.put(6, mSoundPool.load(mMainActivity, R.raw.mission_fail, 1)); //미션 실패
+
+		
 		//리소스 로딩
 		AssetManager am = mMainActivity.getAssets();
 		try {
+			bgmOn = BitmapFactory.decodeStream(am.open("bgm_on.png"));
+			bgmOff = BitmapFactory.decodeStream(am.open("bgm_off.png"));
+			soundOn = BitmapFactory.decodeStream(am.open("sound_on.png"));
+			soundOff = BitmapFactory.decodeStream(am.open("sound_off.png"));
+			
 			background1 = BitmapFactory.decodeStream(am.open("background1.png"));
 			background2 = BitmapFactory.decodeStream(am.open("background2.jpg"));
 			back_cloud = BitmapFactory.decodeStream(am.open("background_2.png"));
@@ -99,6 +121,10 @@ public class AppDirector extends Application {
 		}
 	}
 	
+	public void play(int index){
+		mSoundPool.play((Integer)mSoundPoolMap.get(index),  1f,  1f, 1, 0, 1f);
+	}
+	
 	public MotionEvent convertEvent(MotionEvent event){
 		//Log.d("ldk", "x:" + event.getX());
 		MotionEvent e = MotionEvent.obtain(event);
@@ -112,6 +138,8 @@ public class AppDirector extends Application {
 	private GameView mGameView;
 	private MainActivity mMainActivity;
 	private long mDeltaTime;
+	private boolean mIsBGM;
+	private boolean mIsSound;
 
 	public GameView getmGameView() {
 		return mGameView;
@@ -168,9 +196,27 @@ public class AppDirector extends Application {
     public void setRatioY(float ratioY) {
         this.ratioY = ratioY;
     }
+    
+    public boolean ismIsBGM() {
+		return mIsBGM;
+	}
+
+	public void setmIsBGM(boolean mIsBGM) {
+		this.mIsBGM = mIsBGM;
+	}
+
+	public boolean ismIsSound() {
+		return mIsSound;
+	}
+
+	public void setmIsSound(boolean mIsSound) {
+		this.mIsSound = mIsSound;
+	}
     //getter and setter------------------------------------
     
-    public void calculateRatio(){
+
+
+	public void calculateRatio(){
         this.ratioX = (float)mVirtualWidth/mScreenWidth;
         this.ratioY = (float)mVirtualHeight/mScreenHeight;
     }
