@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 public abstract class Sprite {
 	protected int mX, mY;
 	protected int mWidth, mHeight;
-	protected boolean isOn;
 	protected Rect dstRect;
 	protected boolean mIsDead;
 	protected AppDirector mAppDirector;
@@ -67,12 +66,12 @@ public abstract class Sprite {
     public int isSelected(MotionEvent event) {
     	//버튼 영역 체크
     	int result = -1;
-    	if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
+    	if (dstRect.contains((int)event.getX(), (int)event.getY())) {
+    	//if (event.getX() > mX && event.getX() < mX+mWidth && event.getY() > mY && event.getY() < mY+mHeight) {
     		Log.d("ldk", "action is " + event.getAction());
 	        switch(event.getAction()){
 	        case MotionEvent.ACTION_DOWN:
 	        	result = MotionEvent.ACTION_DOWN;
-	        	isOn = true;
 	        	break;
 	        case MotionEvent.ACTION_MOVE:
 	            result = MotionEvent.ACTION_MOVE;
@@ -80,7 +79,6 @@ public abstract class Sprite {
 	        case MotionEvent.ACTION_UP:
 	        	//FALL-THROUGH
 	        case MotionEvent.ACTION_CANCEL:
-	            isOn = false;
 	            result = MotionEvent.ACTION_UP;
 	            break;
 	        }

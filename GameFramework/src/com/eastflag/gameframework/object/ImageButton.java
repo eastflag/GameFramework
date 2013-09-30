@@ -6,14 +6,14 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class ImageButton extends Sprite{
-    
-    private Bitmap mBitmap, mBitmapOn;
+	public boolean isOn;
+    private Bitmap mBitmap, mBitmapMute;
     
     private Rect srcRect;
 
-    public ImageButton(Bitmap bitmap, Bitmap bitmapOn) {
+    public ImageButton(Bitmap bitmap, Bitmap bitmapMute) {
         mBitmap = bitmap;
-        mBitmapOn = bitmapOn;
+        mBitmapMute = bitmapMute;
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
         
@@ -22,9 +22,10 @@ public class ImageButton extends Sprite{
 
     public void present(Canvas canvas) {
         if(isOn) {
-            canvas.drawBitmap(mBitmapOn, srcRect, dstRect, null);
+            canvas.drawBitmap(mBitmapMute, srcRect, dstRect, null);
         } else {
             canvas.drawBitmap(mBitmap, srcRect, dstRect, null);
         }
     }
+    
 }

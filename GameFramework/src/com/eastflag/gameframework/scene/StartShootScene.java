@@ -168,7 +168,7 @@ public class StartShootScene implements IScene{
 				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
 				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
 				missileList.add(missile);
-				mAppDirector.play(2);
+				mAppDirector.play(2); // 뷰 재사용
 			}
 			break;
 		case MotionEvent.ACTION_UP:

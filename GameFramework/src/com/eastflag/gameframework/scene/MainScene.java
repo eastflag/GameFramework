@@ -32,8 +32,16 @@ public class MainScene implements IScene {
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
 		//menuShooting.setPosition(540, 500, 800, 300);
 		
-		btnBgm = new ImageButton(mAppDirector.soundOn, mAppDirector.soundOff);
-		btnSound = new ImageButton(mAppDirector.bgmOn, mAppDirector.bgmOff);
+		btnBgm = new ImageButton(mAppDirector.bgmOn, mAppDirector.bgmOff);
+		btnBgm.setPosition(100, 1800, 128, 128);
+		btnBgm.isOn=false;
+		mAppDirector.setmIsBGM(true);
+		mAppDirector.getmMainActivity().PlayBG();
+		
+		btnSound = new ImageButton(mAppDirector.soundOn, mAppDirector.soundOff);
+		btnSound.setPosition(250, 1800, 128, 128);
+		btnSound.isOn = false;
+		mAppDirector.setmIsSound(true);
 	}
 	
 
@@ -59,14 +67,52 @@ public class MainScene implements IScene {
 		//if(menuShooting.isSelected(event)) {
 		//	mAppDirector.getmGameView().changeScene(new StartScene());
 		//}
-		
-		if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_UP) {
-			mAppDirector.getmGameView().changeScene(new StartShootScene());
+		switch(event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				mMenuShooting.setIsOn(true);
+			}
+			if(mMenuBoard.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				mMenuBoard.setIsOn(true);
+			}
+			//환경 설정
+			if(btnBgm.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				if(btnBgm.isOn){
+					btnBgm.isOn=false;
+					mAppDirector.setmIsBGM(true);
+					mAppDirector.getmMainActivity().PlayBG();
+				}
+				else{
+					btnBgm.isOn=true;
+					mAppDirector.setmIsBGM(false);
+					mAppDirector.getmMainActivity().StopBG();
+				}
+			}
+			if(btnSound.isSelected(event) == MotionEvent.ACTION_DOWN) {
+				if(btnSound.isOn){
+					btnSound.isOn=false;
+					mAppDirector.setmIsSound(true);
+				}
+				else{
+					btnSound.isOn = true;
+					mAppDirector.setmIsSound(true);
+				}
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_UP) {
+				mAppDirector.getmGameView().changeScene(new StartShootScene());
+			}
+			
+			if(mMenuBoard.isSelected(event) == MotionEvent.ACTION_UP) {
+				mAppDirector.getmGameView().changeScene(new StartShootScene());
+			}
+			break;
 		}
 		
-		if(mMenuBoard.isSelected(event) == MotionEvent.ACTION_UP) {
-			mAppDirector.getmGameView().changeScene(new StartShootScene());
-		}
+		
+		
+		
 	}
 
 }

@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 
 public class TextButton extends Sprite{
 	private String title;
+	private boolean isOn;
 	
 	private Paint backgroundPaint, backgroundOnPaint, fontPaint;
 	
@@ -35,5 +36,9 @@ public class TextButton extends Sprite{
 		}
 
 		canvas.drawText(title, mX+mWidth/2, mY+mHeight/2 + (int)(mHeight/2*0.4f), fontPaint);
+	}
+	
+	public void setIsOn(boolean isOn) {
+		this.isOn = isOn;
 	}
 }
