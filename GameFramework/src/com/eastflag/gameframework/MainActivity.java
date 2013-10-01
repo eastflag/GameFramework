@@ -49,6 +49,30 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+    @Override
+    protected void onPause() {
+        super.onPause();
+        
+        StopBG();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        
+        if(AppDirector.getInstance().ismIsBGM())
+            PlayBG();
+        else
+            StopBG();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        
+        StopBG();
+    }
 
 	public void PlayBG(){
     	try{
