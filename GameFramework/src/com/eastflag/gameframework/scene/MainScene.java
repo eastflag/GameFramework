@@ -35,13 +35,10 @@ public class MainScene implements IScene {
 		btnBgm = new ImageButton(mAppDirector.bgmOn, mAppDirector.bgmOff);
 		btnBgm.setPosition(100, 1800, 128, 128);
 		btnBgm.isOn=false;
-		mAppDirector.setmIsBGM(true);
-		mAppDirector.getmMainActivity().PlayBG();
 		
 		btnSound = new ImageButton(mAppDirector.soundOn, mAppDirector.soundOff);
 		btnSound.setPosition(250, 1800, 128, 128);
 		btnSound.isOn = false;
-		mAppDirector.setmIsSound(true);
 	}
 	
 

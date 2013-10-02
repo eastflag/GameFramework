@@ -10,7 +10,7 @@ public abstract class Sprite {
 	protected int mX, mY;
 	protected int mWidth, mHeight;
 	protected Rect dstRect;
-	protected boolean mIsDead;
+	public boolean mIsDead;
 	protected AppDirector mAppDirector;
 	
 	public Sprite(){

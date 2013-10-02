@@ -56,7 +56,8 @@ public class SpriteAnimation extends Sprite {
     }
     
     public void present(Canvas canvas){
-        canvas.drawBitmap(bitmap, srcRect, dstRect, null);
+    	if(!mIsDead)
+    		canvas.drawBitmap(bitmap, srcRect, dstRect, null);
     }
     
 }

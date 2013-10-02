@@ -3,6 +3,7 @@ package com.eastflag.gameframework.object;
 import com.eastflag.gameframework.AppDirector;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 public class Player extends SpriteAnimation {
 	
@@ -39,7 +40,6 @@ public class Player extends SpriteAnimation {
 			}
 		}
 	}
-
 
 	public void startMoving(int x, int y) {
 		directionX = x;

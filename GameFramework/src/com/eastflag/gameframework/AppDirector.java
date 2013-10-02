@@ -71,6 +71,10 @@ public class AppDirector extends Application {
 		mHeight = outMetrics.heightPixels;
 		Log.d("ldk", "mWidth:" + mWidth);
 		
+		//사운드, bgm 초기화 => 향후 preference 활용
+		mIsBGM = true;
+		mIsSound = true;
+		
 		//사운드 로딩
 		mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
 		mSoundPoolMap = new HashMap<Integer, Integer>();

@@ -194,21 +194,60 @@ public class StartShootScene implements IScene{
 	}
 
 	private void checkCollision() {
+		//아군 미사일과 적군 충돌 체크
 		for(Missile missile : missileList) {
 			for(Enemy enemy : enemyList) {
 				if(checkBoxToBox(enemy, missile)){
 					enemyList.remove(enemy);
 					missileList.remove(missile);
-					
-					Explosion explosion = new Explosion(mAppDirector.explosion);
-					explosion.init(6, 100, 66, 104, 2);
-					explosion.setPosition(enemy.getmX() + enemy.getmWidth()/2, enemy.getmY() + enemy.getmHeight()/2, enemy.getmWidth(), enemy.getmHeight());
-					explosionList.add(explosion);
-					mAppDirector.play(1); //폭발음
+					//폭발처리
+					addExplosion(enemy);
 					break;
 				}
 			}
 		}
+		
+		//적군과 아군 충돌 체크
+		for(Enemy enemy : enemyList) {
+			if(checkBoxToBox(enemy, mPlayer)) {
+				enemyList.remove(enemy);
+				
+				mPlayer.getDstRect().set(0,0,0,0); //invisible 처리
+				mPlayer.mIsDead = true;
+				
+				//폭발처리
+				addExplosion(mPlayer);
+				break;
+				//게임 종료 처리
+				
+			}
+		}
+		
+		//적군미사일과 아군 충돌 체크
+		for(Missile enemyMissile : enemyMissileList) {
+			if(checkBoxToBox(enemyMissile, mPlayer)) {
+				enemyMissileList.remove(enemyMissile);
+				
+				mPlayer.getDstRect().set(0,0,0,0); //invisible 처리
+				mPlayer.mIsDead = true;
+				
+				//폭발처리
+				addExplosion(mPlayer);
+				break;
+				//게임 종료 처리
+				
+			}
+		}
+	}
+	
+	//폭발처리, sprite : 폭발 위치
+	private void addExplosion(Sprite sprite) {
+		Explosion explosion = new Explosion(mAppDirector.explosion);
+		explosion.init(6, 100, 66, 104, 2);
+		explosion.setPosition(sprite.getmX() + sprite.getmWidth()/2, sprite.getmY() + sprite.getmHeight()/2, sprite.getmWidth(), sprite.getmHeight());
+		explosionList.add(explosion);
+		if(mAppDirector.ismIsSound())
+			mAppDirector.play(1); //폭발음
 	}
 	
 	public boolean checkBoxToBox(Sprite sprite1, Sprite sprite2) {
