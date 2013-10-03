@@ -1,5 +1,6 @@
 package com.eastflag.gameframework.scene;
 
+import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -14,6 +15,7 @@ import com.eastflag.gameframework.object.Player;
 import com.eastflag.gameframework.object.Sprite;
 import com.eastflag.gameframework.object.SpriteObject;
 import com.eastflag.gameframework.object.TextButton;
+import com.eastflag.gameframework.object.TextObject;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,7 +25,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 public class StartShootScene implements IScene{
-	
+	private static final int STATE_START = 1; //게임 시작
+	private static final int STATE_OVER = 3; //게임 오버
+	private int mState = STATE_START;
 //	private Paint mPaint;
 	private AppDirector mAppDirector;
 	private long localDeltaTime;
@@ -36,6 +40,8 @@ public class StartShootScene implements IScene{
 	private BlockingQueue<Enemy> enemyList = new ArrayBlockingQueue<Enemy>(100);
 	private BlockingQueue<Missile> enemyMissileList = new ArrayBlockingQueue<Missile>(100);
 	private BlockingQueue<Explosion> explosionList = new ArrayBlockingQueue<Explosion>(100);
+	
+	private TextObject mTextGameover;
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -63,6 +69,9 @@ public class StartShootScene implements IScene{
 		leftKeypad.setPosition(50, 1700, 100, 100);
 		tapKeypad = new SpriteObject(mAppDirector.circle);
 		tapKeypad.setPosition(150, 1700, 100, 100);
+		
+		mTextGameover = new TextObject("Game Over", 200, Color.YELLOW);
+		mTextGameover.setPosition(540, 1000, 600, 300);
 	}
 
 	@Override
@@ -141,10 +150,17 @@ public class StartShootScene implements IScene{
 		for(Explosion explosion : explosionList) {
 			explosion.present(canvas);
 		}
+		
+		if(mState == STATE_OVER) {
+			mTextGameover.present(canvas);
+		}
 	}
 
 	@Override
 	public void onTouchEvent(MotionEvent event) {
+		//게임 오버 상태면 터치가 안되게 한다.
+		if(mState == STATE_OVER )
+			return;
 		//down시 어떤 객체에서 down 되었는지,
 		//move시 down된 객체에서 move하면서 빠져나갔는지,,
 		//up시 초기화.
@@ -217,9 +233,9 @@ public class StartShootScene implements IScene{
 				
 				//폭발처리
 				addExplosion(mPlayer);
-				break;
 				//게임 종료 처리
-				
+				mState = STATE_OVER; 
+				break;
 			}
 		}
 		
@@ -233,9 +249,9 @@ public class StartShootScene implements IScene{
 				
 				//폭발처리
 				addExplosion(mPlayer);
-				break;
 				//게임 종료 처리
-				
+				mState = STATE_OVER; 
+				break;
 			}
 		}
 	}
