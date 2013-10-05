@@ -51,9 +51,28 @@ public class GameView extends SurfaceView implements Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {  //필름을 카메라에 끼움
+		Log.d("ldk", "surfaceCreated");
 		//2. 애니메이션 작가에게 일을 시킴
 	    mThread.setRunning(true);
-		mThread.start();
+		
+		try
+		{
+	    	if(mThread.getState() == Thread.State.TERMINATED )
+	    	{
+	    		mThread = new RenderingThread(this, getHolder());
+	    		mThread.setRunning(true);
+	    		setFocusable(true);
+	    		mThread.start();
+	    	}
+	    	else
+	    	{
+	    		mThread.start();
+	    	}
+		}
+		catch(Exception ex)
+		{
+			Log.e("ldk", "ex:" + ex.toString());
+		}
 	}
 
 	@Override
@@ -63,6 +82,7 @@ public class GameView extends SurfaceView implements Callback {
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		Log.d("ldk", "surfaceDestroyed");
 		//3. 애니메이션 작가의 일을 중단 시킴
 		mThread.setRunning(false);
 		boolean retry = true;
@@ -74,7 +94,6 @@ public class GameView extends SurfaceView implements Callback {
 				e.printStackTrace();
 			}
 		}
-	
 	}
 	
 	//4. 필름 상태 업데이트

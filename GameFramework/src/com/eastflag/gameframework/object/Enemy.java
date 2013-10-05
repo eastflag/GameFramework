@@ -1,12 +1,14 @@
 package com.eastflag.gameframework.object;
 
+import java.util.Random;
+
 import android.graphics.Bitmap;
 
 public class Enemy extends SpriteAnimation{
 	private long localTime;
 	
 	private long localMissileTime;
-	private long MISSILE_DISPLAY_TIME = 5000; //5초
+	private long MISSILE_DISPLAY_TIME = 4000; //4초
 	private boolean makeMissile;
 
 	public Enemy(Bitmap bitmap) {
@@ -33,6 +35,8 @@ public class Enemy extends SpriteAnimation{
 		while(localMissileTime >= MISSILE_DISPLAY_TIME) {
 			makeMissile = true;
 			localMissileTime -= MISSILE_DISPLAY_TIME;
+			Random rand = new Random();
+			MISSILE_DISPLAY_TIME = (2 + rand.nextInt(3)) * 1000; //2~4초
 		}
 	}
 

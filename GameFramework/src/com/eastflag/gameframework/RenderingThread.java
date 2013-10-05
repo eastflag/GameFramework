@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Bitmap.Config;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class RenderingThread extends Thread {
@@ -47,9 +48,8 @@ public class RenderingThread extends Thread {
 			currentTime = System.currentTimeMillis();
 			
 			//1. 상태 업데이트와 그리기는 일을 시작
-			
-			canvas = mHolder.lockCanvas();  // 도화지를 고정 시키기
 			try{
+				canvas = mHolder.lockCanvas();  // 도화지를 고정 시키기
 				synchronized(mHolder){
 					//객체 상태 갱신
 					mGameView.update();
@@ -57,6 +57,8 @@ public class RenderingThread extends Thread {
 					mGameView.present(virtualCanvas);
 					
 				}
+            } catch (Exception e) {
+            	Log.e("ldk", "exception");
             } finally {
                 if (canvas != null) {
                     //5. 실제 화면해상도에 맞추기

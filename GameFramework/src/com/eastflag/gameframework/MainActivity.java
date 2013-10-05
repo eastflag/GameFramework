@@ -41,55 +41,69 @@ public class MainActivity extends Activity {
 		
 		//게임뷰 세팅
 		setContentView(new GameView(this)); //카메라에 필름 끼우기
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		
+		createBGM();
 	}
 	
     @Override
     protected void onPause() {
         super.onPause();
         
-        StopBG();
+        pauseBGM();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         
-        if(AppDirector.getInstance().ismIsBGM())
-            PlayBG();
-        else
-            StopBG();
+        playBGM();
     }
-
+    
     @Override
-    protected void onStop() {
-        super.onStop();
-        
-        StopBG();
+    protected void onDestroy() {
+    	super.onDestroy();
+    	
+    	stopBGM();
     }
 
-	public void PlayBG(){
+	public void createBGM(){
     	try{
     		mMediaPlayer = new MediaPlayer();
         	AssetManager am = getAssets();
     		AssetFileDescriptor descriptor = am.openFd("backmusic.mp3");
     		mMediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
     		mMediaPlayer.prepare();
-    		mMediaPlayer.start();
+    		//mMediaPlayer.start();
     		mMediaPlayer.setVolume(1f, 1f);
     	}
     	catch (IllegalArgumentException e) {Log.e("MediaPlayer Error", e.getMessage());}
 		catch (IllegalStateException e) {Log.e("MediaPlayer Error", e.getMessage());}
 		catch (IOException e) {}
     }
+	
+	public void toggleBGM() {
+		if(AppDirector.getInstance().ismIsBGM()) {
+			playBGM();
+		} else {
+			pauseBGM();
+		}
+	}
+	
+	public void playBGM() {
+		try{
+    		mMediaPlayer.start();
+    	}
+		catch (IllegalStateException e) {Log.e("MediaPlayer Error", e.getMessage());}
+	}
+	
+	public void pauseBGM() {
+		try{
+    		mMediaPlayer.pause();;
+    	}
+		catch (IllegalStateException e) {Log.e("MediaPlayer Error", e.getMessage());}
+	}
     
-    public void StopBG(){	
+    public void stopBGM(){	
     	if(mMediaPlayer != null)	{
     		try{
         		mMediaPlayer.release();

@@ -77,12 +77,12 @@ public class MainScene implements IScene {
 				if(btnBgm.isOn){
 					btnBgm.isOn=false;
 					mAppDirector.setmIsBGM(true);
-					mAppDirector.getmMainActivity().PlayBG();
+					mAppDirector.getmMainActivity().playBGM();
 				}
 				else{
 					btnBgm.isOn=true;
 					mAppDirector.setmIsBGM(false);
-					mAppDirector.getmMainActivity().StopBG();
+					mAppDirector.getmMainActivity().pauseBGM();
 				}
 			}
 			if(btnSound.isSelected(event) == MotionEvent.ACTION_DOWN) {

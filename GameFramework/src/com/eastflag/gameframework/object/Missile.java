@@ -20,7 +20,7 @@ public class Missile extends SpriteObject {
 		
 		while(localTime>=10) {
 			mY += speed; //10ms에 3px 이동
-			if(mY+mHeight<0) {
+			if(mY+mHeight<0 || mY > 1920) {
 				mIsDead = true;
 				break;
 			}
