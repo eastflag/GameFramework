@@ -119,11 +119,24 @@ public class MainActivity extends Activity {
     	
     	if(keyCode == KeyEvent.KEYCODE_BACK){
     		IScene mIScene = AppDirector.getInstance().getmGameView().mIScene;
-			if (mIScene instanceof MainScene){
+			
+    		if (mIScene instanceof MainScene){
 				finishApp();
 			}
 			if (mIScene instanceof StartShootScene){
-				retryGame();
+		  		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		  		builder.setMessage("메뉴 화면으로 돌아가시겠습니까?")
+			  		.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+			  			public void onClick(DialogInterface dialog, int which) {
+			  				AppDirector.getInstance().getmGameView().changeScene(new MainScene());
+			  			}
+			  		})
+			  		.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+			  			public void onClick(DialogInterface dialog, int which) {
+
+			  			}
+			  		})
+			  		.show();;
 			}
 
     	}

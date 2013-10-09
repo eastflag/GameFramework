@@ -23,11 +23,12 @@ public class MainScene implements IScene {
 		
 		mMenuShooting = new TextButton("shooting game");
 		mMenuShooting.setPosition(540, 600, 800, 150);
-		mMenuShooting.setColor(Color.CYAN, Color.GREEN, Color.WHITE);
+		int backColor = 0xFFA83030;
+		mMenuShooting.setColor(backColor, Color.GREEN, Color.WHITE);
 		
 		mMenuBoard = new TextButton("board game");
 		mMenuBoard.setPosition(540, 1000, 800, 150);
-		mMenuBoard.setColor(Color.CYAN, Color.GREEN, Color.WHITE);
+		mMenuBoard.setColor(backColor, Color.GREEN, Color.WHITE);
 		
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
 		//menuShooting.setPosition(540, 500, 800, 300);
@@ -65,6 +66,7 @@ public class MainScene implements IScene {
 		//	mAppDirector.getmGameView().changeScene(new StartScene());
 		//}
 		switch(event.getAction()) {
+		
 		case MotionEvent.ACTION_DOWN:
 			if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_DOWN) {
 				mMenuShooting.setIsOn(true);
@@ -96,7 +98,12 @@ public class MainScene implements IScene {
 				}
 			}
 			break;
+			
 		case MotionEvent.ACTION_UP:
+			//눌러진 버튼 초기화
+			mMenuShooting.setIsOn(false);
+			mMenuBoard.setIsOn(false);
+			
 			if(mMenuShooting.isSelected(event) == MotionEvent.ACTION_UP) {
 				mAppDirector.getmGameView().changeScene(new StartShootScene());
 			}
