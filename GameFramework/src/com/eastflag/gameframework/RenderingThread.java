@@ -58,7 +58,7 @@ public class RenderingThread extends Thread {
 					
 				}
             } catch (Exception e) {
-            	Log.e("ldk", "exception");
+            	Log.e("ldk", "exception: " + e.toString());
             } finally {
                 if (canvas != null) {
                     //5. 실제 화면해상도에 맞추기

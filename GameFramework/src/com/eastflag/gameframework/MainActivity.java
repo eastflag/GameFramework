@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.eastflag.gameframework.scene.IScene;
 import com.eastflag.gameframework.scene.MainScene;
+import com.eastflag.gameframework.scene.StartShootScene;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -118,35 +119,50 @@ public class MainActivity extends Activity {
     	
     	if(keyCode == KeyEvent.KEYCODE_BACK){
     		IScene mIScene = AppDirector.getInstance().getmGameView().mIScene;
-//			if(mIScene instanceof MainScene){
-//				finishApp();
-//			}
-    		finishApp();
+			if (mIScene instanceof MainScene){
+				finishApp();
+			}
+			if (mIScene instanceof StartShootScene){
+				retryGame();
+			}
+
     	}
 		
 		return false;
 	}
 
 	public void finishApp(){
-  		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-  		alertDialog.setMessage("게임을 종료하시겠습니까?");
-  		alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener()
-  		{
-  			public void onClick(DialogInterface dialog, int which)
-  			{
-  				System.exit(-1);
-  				finish();
-  				return;
-  			}
-  		});
-  		alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
-  		{
-  			public void onClick(DialogInterface dialog, int which)
-  			{
-  				return;
-  			}
-  		});
-
-  		alertDialog.show();;
+  		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+  		builder.setMessage("게임을 종료하시겠습니까?")
+	  		.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+	  			public void onClick(DialogInterface dialog, int which) {
+	  				System.exit(-1);
+	  				finish();
+	  				return;
+	  			}
+	  		})
+	  		.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+	  			public void onClick(DialogInterface dialog, int which) {
+	  				return;
+	  			}
+	  		})
+	  		.show();;
+  	}
+	
+	public void retryGame(){
+		Log.e("ldk", "retryGame");
+  		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+  		builder.setMessage("게임을 다시 하시겠습니까?")
+  			.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+	  			public void onClick(DialogInterface dialog, int which) {
+	  				AppDirector.getInstance().getmGameView().changeScene(new StartShootScene());
+	  			}
+	  		})
+	  		.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+	  			public void onClick(DialogInterface dialog, int which) {
+	  				AppDirector.getInstance().getmGameView().changeScene(new MainScene());
+	  			}
+	  		})
+	  		.show();;
   	}
 }

@@ -21,6 +21,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -31,7 +33,7 @@ public class StartShootScene implements IScene{
 //	private Paint mPaint;
 	private AppDirector mAppDirector;
 	private long localDeltaTime;
-	private final long ENEMY_DISPLAY_TIME = 3000; // 3초에 한번씩 출현
+	private long ENEMY_DISPLAY_TIME = 3000; // 3초에 한번씩 출현
 	
 	private Background mBackground, mBackCloud; //백그라운드 배경, 전경
 	private SpriteObject leftKeypad, rightKeypad, upKeypad, downKeypad, tapKeypad;
@@ -41,7 +43,11 @@ public class StartShootScene implements IScene{
 	private BlockingQueue<Missile> enemyMissileList = new ArrayBlockingQueue<Missile>(100);
 	private BlockingQueue<Explosion> explosionList = new ArrayBlockingQueue<Explosion>(100);
 	
+	private Paint hudPaint;
+	
 	private TextObject mTextGameover;
+	private TextObject mTextScore;
+	private int mScore;
 	
 	public StartShootScene(){
 //		mPaint = new Paint();
@@ -70,8 +76,15 @@ public class StartShootScene implements IScene{
 		tapKeypad = new SpriteObject(mAppDirector.circle);
 		tapKeypad.setPosition(150, 1700, 100, 100);
 		
+		//Hud
+		hudPaint = new Paint();
+		hudPaint.setColor(Color.BLACK);
+		hudPaint.setAlpha(150);
+		
 		mTextGameover = new TextObject("Game Over", 200, Color.YELLOW);
-		mTextGameover.setPosition(540, 1000, 600, 300);
+		mTextGameover.setPosition(540, 1000, 0, 0);
+		mTextScore = new TextObject(String.format("Score: %5d", mScore), 80, Color.WHITE);
+		mTextScore.setPosition(250, 80, 0, 0);
 	}
 
 	@Override
@@ -80,7 +93,8 @@ public class StartShootScene implements IScene{
 		
 		mBackground.update();
 		mBackCloud.update();
-		mPlayer.update();
+		if(mState == STATE_START)
+			mPlayer.update();
 		
 		for(Missile missile : missileList) {
 			missile.update();
@@ -113,6 +127,9 @@ public class StartShootScene implements IScene{
 			explosion.update();
 			if(explosion.getmIsDead()) explosionList.remove(explosion);
 		}
+		
+		//점수 update
+		mTextScore.setTitle(String.format("Score: %5d", mScore));
 		
 		addEnemy();
 		checkCollision();
@@ -150,6 +167,11 @@ public class StartShootScene implements IScene{
 		for(Explosion explosion : explosionList) {
 			explosion.present(canvas);
 		}
+		
+		//Hud present
+		canvas.drawRect(0, 0, 1080, 160, hudPaint);
+		
+		mTextScore.present(canvas);
 		
 		if(mState == STATE_OVER) {
 			mTextGameover.present(canvas);
@@ -206,6 +228,8 @@ public class StartShootScene implements IScene{
 			enemy.setPosition(minX + rand.nextInt(maxX-minX), -(height/2), width, height);
 			enemyList.add(enemy);
 			localDeltaTime -= ENEMY_DISPLAY_TIME;
+			
+			ENEMY_DISPLAY_TIME = (3 + rand.nextInt(5)) * 1000; //3초에서 7초사이 랜덤 생성
 		}
 	}
 
@@ -216,6 +240,8 @@ public class StartShootScene implements IScene{
 				if(checkBoxToBox(enemy, missile)){
 					enemyList.remove(enemy);
 					missileList.remove(missile);
+					//점수 증가
+					mScore += 100;
 					//폭발처리
 					addExplosion(enemy);
 					break;
@@ -235,6 +261,7 @@ public class StartShootScene implements IScene{
 				addExplosion(mPlayer);
 				//게임 종료 처리
 				mState = STATE_OVER; 
+				showRetryDialog();
 				break;
 			}
 		}
@@ -251,6 +278,7 @@ public class StartShootScene implements IScene{
 				addExplosion(mPlayer);
 				//게임 종료 처리
 				mState = STATE_OVER; 
+				showRetryDialog();
 				break;
 			}
 		}
@@ -272,6 +300,16 @@ public class StartShootScene implements IScene{
 		} else {
 			return false;
 		}
+	}
+	
+	private void showRetryDialog() {
+		Handler mHandler = new Handler(Looper.getMainLooper());
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				mAppDirector.getmMainActivity().retryGame();
+			}
+		});
 	}
 	
 }
