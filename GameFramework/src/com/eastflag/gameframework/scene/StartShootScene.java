@@ -66,15 +66,16 @@ public class StartShootScene implements IScene{
 		mPlayer.setPosition(540, 1600, 150, 250);
 		
 		upKeypad = new SpriteObject(mAppDirector.upTriangle);
-		upKeypad.setPosition(150, 1600, 100, 100);
+		upKeypad.setPosition(225, 1550, 150, 150);
 		rightKeypad = new SpriteObject(mAppDirector.rightTriangle);
-		rightKeypad.setPosition(250, 1700, 100, 100);
+		rightKeypad.setPosition(375, 1700, 150, 150);
 		downKeypad = new SpriteObject(mAppDirector.downTriangle);
-		downKeypad.setPosition(150, 1800, 100, 100);
+		downKeypad.setPosition(225, 1850, 150, 150);
 		leftKeypad = new SpriteObject(mAppDirector.leftTriangle);
-		leftKeypad.setPosition(50, 1700, 100, 100);
+		leftKeypad.setPosition(75, 1700, 150, 150);
+		
 		tapKeypad = new SpriteObject(mAppDirector.circle);
-		tapKeypad.setPosition(150, 1700, 100, 100);
+		tapKeypad.setPosition(900, 1700, 150, 150);
 		
 		//Hud
 		hudPaint = new Paint();
@@ -178,16 +179,23 @@ public class StartShootScene implements IScene{
 		}
 	}
 
+	/**
+	 * 상위(왼쪽) 1바이트는 터치 인덱스 아이디, 하위(오른쪽) 1바이트는 액션정보
+	 * 싱글터치일 경우는 인덱스가 0이므로 상관없지만 멀티터치일경우는 상위 한바이트가 1의 값을 가지므로
+	 * 멀티터치일 경우는 BIT MASK 처리해야 한다.
+	 */
 	@Override
 	public void onTouchEvent(MotionEvent event) {
+		int action = event.getAction();
+		Log.e("ldk", "action: " + (action & MotionEvent.ACTION_MASK));
 		//게임 오버 상태면 터치가 안되게 한다.
 		if(mState == STATE_OVER )
 			return;
 		//down시 어떤 객체에서 down 되었는지,
 		//move시 down된 객체에서 move하면서 빠져나갔는지,,
 		//up시 초기화.
-		switch(event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
+		switch(action & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_DOWN:  //Fall Through
 			//keypad
 			if(upKeypad.isSelected(event) == MotionEvent.ACTION_DOWN){
 				mPlayer.startMoving(0, -1);
@@ -209,9 +217,22 @@ public class StartShootScene implements IScene{
 				mAppDirector.play(2); // 뷰 재사용
 			}
 			break;
+		
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_CANCEL:
 			mPlayer.stopMoving();
+			break;
+		
+		case MotionEvent.ACTION_POINTER_DOWN:
+			Log.d("ldk", "event.getX(): " + event.getX()); // 아래 0과 같음
+			Log.d("ldk", "event.getX(0): " + event.getX(0));
+			Log.d("ldk", "event.getX(1): " + event.getX(1));
+			if(tapKeypad.isSelected(event) == MotionEvent.ACTION_POINTER_DOWN) {
+				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
+				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
+				missileList.add(missile);
+				mAppDirector.play(2); // 뷰 재사용
+			}
 			break;
 		}
 	}

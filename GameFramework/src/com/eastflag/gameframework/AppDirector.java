@@ -135,7 +135,11 @@ public class AppDirector extends Application {
 	public MotionEvent convertEvent(MotionEvent event){
 		//Log.d("ldk", "x:" + event.getX());
 		MotionEvent e = MotionEvent.obtain(event);
-		e.setLocation(event.getX() * mVirtualWidth / mWidth, event.getY() * mVirtualHeight / mHeight);
+		if(event.getPointerCount() > 1) { //multi touch
+			e.setLocation(event.getX(1) * mVirtualWidth / mWidth, event.getY(1) * mVirtualHeight / mHeight);
+		} else { //single touch
+			e.setLocation(event.getX() * mVirtualWidth / mWidth, event.getY() * mVirtualHeight / mHeight);
+		}
 		//Log.d("ldk", "calculated x:" + e.getX());
 		
 		return e;
