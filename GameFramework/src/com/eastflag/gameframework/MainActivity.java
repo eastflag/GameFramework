@@ -57,7 +57,9 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         
-        playBGM();
+        if(AppDirector.getInstance().getBGM()){
+        	playBGM();
+        }
     }
     
     @Override
@@ -83,7 +85,7 @@ public class MainActivity extends Activity {
     }
 	
 	public void toggleBGM() {
-		if(AppDirector.getInstance().ismIsBGM()) {
+		if(AppDirector.getInstance().getBGM()) {
 			playBGM();
 		} else {
 			pauseBGM();

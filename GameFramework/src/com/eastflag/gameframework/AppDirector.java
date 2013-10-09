@@ -7,6 +7,7 @@ import com.eastflag.gameframework.object.Enemy;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,7 +35,7 @@ public class AppDirector extends Application {
 	
 	//사운드
 	private SoundPool mSoundPool;
-	private HashMap<Integer, Integer> mSoundPoolMap;
+	private HashMap<SoundEffect, Integer> mSoundPoolMap;
 	private AudioManager mAudioManager;
 	
 	//리소스
@@ -48,6 +49,10 @@ public class AppDirector extends Application {
 	public Bitmap enemy [] = new Bitmap[Enemy.EnemyType.values().length];
 	public Bitmap missile, missile2;
 	public Bitmap explosion;
+	
+	public enum SoundEffect {
+		EXPLOSION, PLAYER_MISSILE, ENEMY_MISSILE, MISSION_START, MISSION_SUCCESS, MISSION_FAIL
+	}
 	
 	//singleton pattern-------------------------------------
 	private AppDirector(){
@@ -74,21 +79,17 @@ public class AppDirector extends Application {
 		mHeight = outMetrics.heightPixels;
 		Log.d("ldk", "mWidth:" + mWidth);
 		
-		//사운드, bgm 초기화 => 향후 preference 활용
-		mIsBGM = true;
-		mIsSound = true;
-		
 		//사운드 로딩
 		mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-		mSoundPoolMap = new HashMap<Integer, Integer>();
+		mSoundPoolMap = new HashMap<SoundEffect, Integer>();
 		mAudioManager = (AudioManager)mMainActivity.getSystemService(Context.AUDIO_SERVICE);
 		
-		mSoundPoolMap.put(1, mSoundPool.load(mMainActivity, R.raw.explosion, 1)); //폭발음
-		mSoundPoolMap.put(2, mSoundPool.load(mMainActivity, R.raw.missile, 1)); //아군 미사일
-		mSoundPoolMap.put(3, mSoundPool.load(mMainActivity, R.raw.missile_enemy, 1)); //적군 미사일
-		mSoundPoolMap.put(4, mSoundPool.load(mMainActivity, R.raw.mission_start, 1)); //미션 시작
-		mSoundPoolMap.put(5, mSoundPool.load(mMainActivity, R.raw.mission_success, 1)); //미션 성공
-		mSoundPoolMap.put(6, mSoundPool.load(mMainActivity, R.raw.mission_fail, 1)); //미션 실패
+		mSoundPoolMap.put(SoundEffect.EXPLOSION, mSoundPool.load(mMainActivity, R.raw.explosion, 1)); //폭발음
+		mSoundPoolMap.put(SoundEffect.PLAYER_MISSILE, mSoundPool.load(mMainActivity, R.raw.missile, 1)); //아군 미사일
+		mSoundPoolMap.put(SoundEffect.ENEMY_MISSILE, mSoundPool.load(mMainActivity, R.raw.missile_enemy, 1)); //적군 미사일
+		mSoundPoolMap.put(SoundEffect.MISSION_START, mSoundPool.load(mMainActivity, R.raw.mission_start, 1)); //미션 시작
+		mSoundPoolMap.put(SoundEffect.MISSION_SUCCESS, mSoundPool.load(mMainActivity, R.raw.mission_success, 1)); //미션 성공
+		mSoundPoolMap.put(SoundEffect.MISSION_FAIL, mSoundPool.load(mMainActivity, R.raw.mission_fail, 1)); //미션 실패
 
 		
 		//리소스 로딩
@@ -128,8 +129,8 @@ public class AppDirector extends Application {
 		}
 	}
 	
-	public void play(int index){
-		mSoundPool.play((Integer)mSoundPoolMap.get(index),  1f,  1f, 1, 0, 1f);
+	public void play(SoundEffect sf){
+		mSoundPool.play((Integer)mSoundPoolMap.get(sf),  1f,  1f, 1, 0, 1f);
 	}
 	
 	public MotionEvent convertEvent(MotionEvent event){
@@ -149,8 +150,6 @@ public class AppDirector extends Application {
 	private GameView mGameView;
 	private MainActivity mMainActivity;
 	private long mDeltaTime;
-	private boolean mIsBGM;
-	private boolean mIsSound;
 
 	public GameView getmGameView() {
 		return mGameView;
@@ -208,20 +207,36 @@ public class AppDirector extends Application {
         this.ratioY = ratioY;
     }
     
-    public boolean ismIsBGM() {
-		return mIsBGM;
+    public boolean getBGM() {
+    	SharedPreferences pref = mMainActivity.getSharedPreferences("ShootGame",0);
+    	boolean mBGM = pref.getBoolean("BGM", true);
+		
+		return mBGM;
 	}
 
-	public void setmIsBGM(boolean mIsBGM) {
-		this.mIsBGM = mIsBGM;
+	public void setBGM(boolean mIsBGM) {
+		SharedPreferences pref = mMainActivity.getSharedPreferences("ShootGame",0);
+		SharedPreferences.Editor edit = pref.edit();
+		edit.putBoolean("BGM", mIsBGM);
+		edit.commit();
+		
+		//this.mIsBGM = mIsBGM;
 	}
 
-	public boolean ismIsSound() {
-		return mIsSound;
+	public boolean getSound() {
+		SharedPreferences pref = mMainActivity.getSharedPreferences("ShootGame",0);
+    	boolean mSound = pref.getBoolean("Sound", true);
+		
+		return mSound;
 	}
 
-	public void setmIsSound(boolean mIsSound) {
-		this.mIsSound = mIsSound;
+	public void setSound(boolean mIsSound) {
+		SharedPreferences pref = mMainActivity.getSharedPreferences("ShootGame",0);
+		SharedPreferences.Editor edit = pref.edit();
+		edit.putBoolean("Sound", mIsSound);
+		edit.commit();
+		
+		//this.mIsSound = mIsSound;
 	}
     //getter and setter------------------------------------
     

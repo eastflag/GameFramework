@@ -35,11 +35,11 @@ public class MainScene implements IScene {
 		
 		btnBgm = new ImageButton(mAppDirector.bgmOn, mAppDirector.bgmOff);
 		btnBgm.setPosition(100, 1800, 128, 128);
-		btnBgm.isOn=false;
+		btnBgm.isOn = mAppDirector.getBGM() == true ? false : true;
 		
 		btnSound = new ImageButton(mAppDirector.soundOn, mAppDirector.soundOff);
 		btnSound.setPosition(250, 1800, 128, 128);
-		btnSound.isOn = false;
+		btnSound.isOn = mAppDirector.getSound() == true ? false : true;
 	}
 	
 
@@ -78,23 +78,23 @@ public class MainScene implements IScene {
 			if(btnBgm.isSelected(event) == MotionEvent.ACTION_DOWN) {
 				if(btnBgm.isOn){
 					btnBgm.isOn=false;
-					mAppDirector.setmIsBGM(true);
+					mAppDirector.setBGM(true);
 					mAppDirector.getmMainActivity().playBGM();
 				}
 				else{
 					btnBgm.isOn=true;
-					mAppDirector.setmIsBGM(false);
+					mAppDirector.setBGM(false);
 					mAppDirector.getmMainActivity().pauseBGM();
 				}
 			}
 			if(btnSound.isSelected(event) == MotionEvent.ACTION_DOWN) {
 				if(btnSound.isOn){
 					btnSound.isOn=false;
-					mAppDirector.setmIsSound(true);
+					mAppDirector.setSound(true);
 				}
 				else{
 					btnSound.isOn = true;
-					mAppDirector.setmIsSound(true);
+					mAppDirector.setSound(false);
 				}
 			}
 			break;

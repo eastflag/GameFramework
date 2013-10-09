@@ -214,7 +214,9 @@ public class StartShootScene implements IScene{
 				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
 				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
 				missileList.add(missile);
-				mAppDirector.play(2); // 뷰 재사용
+				if(mAppDirector.getSound()) {
+					mAppDirector.play(AppDirector.SoundEffect.PLAYER_MISSILE);
+				}
 			}
 			break;
 		
@@ -231,7 +233,9 @@ public class StartShootScene implements IScene{
 				Missile missile = new Missile(AppDirector.getInstance().missile, -3);
 				missile.setPosition(mPlayer.getmX() + mPlayer.getmWidth()/2, mPlayer.getmY(), 50, 50);
 				missileList.add(missile);
-				mAppDirector.play(2); // 뷰 재사용
+				if(mAppDirector.getSound()) {
+					mAppDirector.play(AppDirector.SoundEffect.PLAYER_MISSILE);
+				}
 			}
 			break;
 		}
@@ -318,8 +322,8 @@ public class StartShootScene implements IScene{
 		explosion.init(6, 100, 66, 104, 2);
 		explosion.setPosition(sprite.getmX() + sprite.getmWidth()/2, sprite.getmY() + sprite.getmHeight()/2, sprite.getmWidth(), sprite.getmHeight());
 		explosionList.add(explosion);
-		if(mAppDirector.ismIsSound())
-			mAppDirector.play(1); //폭발음
+		if(mAppDirector.getSound())
+			mAppDirector.play(AppDirector.SoundEffect.EXPLOSION); //폭발음
 	}
 	
 	public boolean checkBoxToBox(Sprite sprite1, Sprite sprite2) {
