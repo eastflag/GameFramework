@@ -22,9 +22,9 @@ public class Player extends SpriteAnimation {
 
 		if(isMoving) {
 			localTime += AppDirector.getInstance().getmDeltaTime();
-			while(localTime >= 10) { //10ms동안 1px 움직임
-		    	mX += directionX;
-		    	mY += directionY;
+			while(localTime >= 10) { //10ms동안 1px 움직임, 5px움직일려면 direction * 배수
+		    	mX += directionX * 3;
+		    	mY += directionY * 3;
 		    	
 		    	if(mX<0) 
 		    		mX = 0;

@@ -3,6 +3,8 @@ package com.eastflag.gameframework;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.eastflag.gameframework.object.Enemy;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -42,7 +44,8 @@ public class AppDirector extends Application {
 	public Bitmap bgmOn, bgmOff, soundOn, soundOff;
 	//StartShoot
 	public Bitmap circle, upTriangle, rightTriangle, downTriangle, leftTriangle;
-	public Bitmap player, enemy1, enemy2, enemy3;
+	public Bitmap player; 
+	public Bitmap enemy [] = new Bitmap[Enemy.EnemyType.values().length];
 	public Bitmap missile, missile2;
 	public Bitmap explosion;
 	
@@ -115,9 +118,9 @@ public class AppDirector extends Application {
 			
 			missile = BitmapFactory.decodeStream(am.open("missile_1.png"));
 			missile2 = BitmapFactory.decodeStream(am.open("missile_2.png"));
-			enemy1 = BitmapFactory.decodeStream(am.open("enemy1.png"));
-			enemy2 = BitmapFactory.decodeStream(am.open("enemy2.png"));
-			enemy3 = BitmapFactory.decodeStream(am.open("enemy3.png"));
+			enemy[Enemy.EnemyType.AccelType.ordinal()] = BitmapFactory.decodeStream(am.open("enemy1.png"));
+			enemy[Enemy.EnemyType.LeftType.ordinal()] = BitmapFactory.decodeStream(am.open("enemy2.png"));
+			enemy[Enemy.EnemyType.RightType.ordinal()] = BitmapFactory.decodeStream(am.open("enemy3.png"));
 			explosion = BitmapFactory.decodeStream(am.open("explosion.png"));
 			
 		} catch (IOException e) {

@@ -63,7 +63,7 @@ public class StartShootScene implements IScene{
 		
 		mPlayer = new Player(mAppDirector.player);
 		mPlayer.init(6, 100, 62, 104, 0);
-		mPlayer.setPosition(540, 1600, 200, 350);
+		mPlayer.setPosition(540, 1600, 150, 250);
 		
 		upKeypad = new SpriteObject(mAppDirector.upTriangle);
 		upKeypad.setPosition(150, 1600, 100, 100);
@@ -218,14 +218,21 @@ public class StartShootScene implements IScene{
 	
 	private void addEnemy() {
 		while(localDeltaTime >= ENEMY_DISPLAY_TIME) {
-			Enemy enemy = new Enemy(mAppDirector.enemy1);
-			enemy.init(6, 100, 62, 104, 0);
 			Random rand = new Random();
-			int width = 200;
-			int height = 350;
+			
+			//적군의 3가지 타입을 랜덤 생성
+			int type = rand.nextInt(Enemy.EnemyType.values().length);
+			
+			Enemy enemy = new Enemy(mAppDirector.enemy[type], type);
+			enemy.init(6, 100, 62, 104, 0);
+			
+			int width = 150;
+			int height = 250;
 			int minX = 200/2;
 			int maxX = 1080 - 200/2;
+			//적군의 위치를 랜덤 생성
 			enemy.setPosition(minX + rand.nextInt(maxX-minX), -(height/2), width, height);
+			
 			enemyList.add(enemy);
 			localDeltaTime -= ENEMY_DISPLAY_TIME;
 			
