@@ -51,7 +51,10 @@ public class AppDirector extends Application {
 	public Bitmap explosion;
 	
 	public enum SoundEffect {
-		EXPLOSION, PLAYER_MISSILE, ENEMY_MISSILE, MISSION_START, MISSION_SUCCESS, MISSION_FAIL
+		EXPLOSION, PLAYER_MISSILE, ENEMY_MISSILE, MISSION_START, MISSION_SUCCESS, MISSION_FAIL,
+		SHOOT,  //소음기 총소리, 
+		DDAGUI, //따귀소리, 공배치 할때 사용
+		GUN     //총소리 공 맞출때 사용
 	}
 	
 	//singleton pattern-------------------------------------
@@ -90,6 +93,9 @@ public class AppDirector extends Application {
 		mSoundPoolMap.put(SoundEffect.MISSION_START, mSoundPool.load(mMainActivity, R.raw.mission_start, 1)); //미션 시작
 		mSoundPoolMap.put(SoundEffect.MISSION_SUCCESS, mSoundPool.load(mMainActivity, R.raw.mission_success, 1)); //미션 성공
 		mSoundPoolMap.put(SoundEffect.MISSION_FAIL, mSoundPool.load(mMainActivity, R.raw.mission_fail, 1)); //미션 실패
+		mSoundPoolMap.put(SoundEffect.SHOOT, mSoundPool.load(mMainActivity, R.raw.shoot, 1)); 
+		mSoundPoolMap.put(SoundEffect.DDAGUI, mSoundPool.load(mMainActivity, R.raw.ddagui, 1)); // 공배치시 사용
+		mSoundPoolMap.put(SoundEffect.GUN, mSoundPool.load(mMainActivity, R.raw.gun, 1));  //공 탭 성공
 
 		
 		//리소스 로딩

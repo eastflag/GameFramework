@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 
 public class TextObject extends Sprite{
-	private String title;
+	protected String title;
 	private Paint fontPaint;
 	private int fontSize;
 	

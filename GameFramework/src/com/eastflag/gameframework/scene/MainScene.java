@@ -21,13 +21,13 @@ public class MainScene implements IScene {
 	public MainScene(){
 		mAppDirector = AppDirector.getInstance();
 		
-		mMenuShooting = new TextButton("shooting game");
+		mMenuShooting = new TextButton("Shooting Game");
 		mMenuShooting.setPosition(540, 600, 800, 150);
 		int backColor = 0xFFA83030;
 		mMenuShooting.setColor(backColor, Color.GREEN, Color.WHITE);
 		
-		mMenuBoard = new TextButton("board game");
-		mMenuBoard.setPosition(540, 1000, 800, 150);
+		mMenuBoard = new TextButton("Board Game");
+		mMenuBoard.setPosition(540, 1200, 800, 150);
 		mMenuBoard.setColor(backColor, Color.GREEN, Color.WHITE);
 		
 		//menuShooting = new ImageButton(mAppDirector.menuNew, mAppDirector.menuNewOn);
@@ -109,7 +109,7 @@ public class MainScene implements IScene {
 			}
 			
 			if(mMenuBoard.isSelected(event) == MotionEvent.ACTION_UP) {
-				mAppDirector.getmGameView().changeScene(new StartShootScene());
+				mAppDirector.getmGameView().changeScene(new StartBoardScene());
 			}
 			break;
 		}

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.eastflag.gameframework.scene.IScene;
 import com.eastflag.gameframework.scene.MainScene;
+import com.eastflag.gameframework.scene.StartBoardScene;
 import com.eastflag.gameframework.scene.StartShootScene;
 
 import android.media.MediaPlayer;
@@ -125,7 +126,7 @@ public class MainActivity extends Activity {
     		if (mIScene instanceof MainScene){
 				finishApp();
 			}
-			if (mIScene instanceof StartShootScene){
+			if (mIScene instanceof StartShootScene || mIScene instanceof StartBoardScene){
 		  		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		  		builder.setMessage("메뉴 화면으로 돌아가시겠습니까?")
 			  		.setPositiveButton("YES", new DialogInterface.OnClickListener() {
